@@ -1,0 +1,1709 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stranger Things Universe | The Ultimate Fan Experience</title>
+    <meta name="description" content="The complete guide to Stranger Things - characters, episodes, cast, lore, and interactive fan experiences">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #E72525;
+            --primary-dark: #9e0a0a;
+            --secondary: #0F0F1A;
+            --secondary-light: #1a1a2e;
+            --accent: #00C8FF;
+            --accent-dark: #0095b8;
+            --text: #F0F0F0;
+            --text-dim: #b8b8b8;
+            --card-bg: #181828;
+            --border-radius: 12px;
+            --transition: 0.3s cubic-bezier(.25,.8,.25,1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--secondary);
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        /* CRT Effect */
+        body.crt-effect::before {
+            content: "";
+            pointer-events: none;
+            position: fixed;
+            left: 0; top: 0; right: 0; bottom: 0;
+            z-index: 9999;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(255,255,255,0.02) 0px,
+                rgba(255,255,255,0.02) 1px,
+                transparent 2px,
+                transparent 4px
+            );
+            mix-blend-mode: lighten;
+        }
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 100;
+            background: rgba(15, 15, 26, 0.95);
+            box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+            border-bottom: 2px solid var(--primary);
+            transition: background var(--transition), box-shadow var(--transition);
+        }
+        header.scrolled {
+            background: rgba(15, 15, 26, 0.99);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 8px var(--primary-dark);
+            gap: 10px;
+            transition: color var(--transition);
+        }
+        .logo:hover { color: var(--accent); }
+        .main-nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .main-nav a {
+            color: var(--text);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: color var(--transition);
+        }
+        .main-nav a:focus { outline: 2px solid var(--accent); }
+        .main-nav a:hover,
+        .main-nav a:focus { color: var(--primary); }
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width var(--transition);
+        }
+        .main-nav a:hover::after,
+        .main-nav a:focus::after { width: 100%; }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color var(--transition);
+        }
+        .mobile-menu-btn:focus { outline: 2px solid var(--accent); }
+        .mobile-menu-btn:hover { color: var(--accent); }
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: url('https://4kwallpapers.com/images/walls/thumbs_3t/18568.jpg') no-repeat center center;
+            background-size: cover;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(15,15,26,0.85),rgba(15,15,26,0.7));
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: rgba(24,24,40,0.7);
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37);
+            animation: fadeInDown 1.2s;
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .glitch {
+            position: relative;
+            color: white;
+            font-size: 4.5rem;
+            font-family: 'Bebas Neue', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 0 var(--primary-dark);
+            animation: flicker 2s infinite alternate;
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--primary);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px;
+            text-shadow: -2px 0 var(--accent);
+            animation: glitch-anim-2 5s infinite linear alternate-reverse;
+        }
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.85; text-shadow: 2px 2px 8px var(--accent); }
+        }
+        @keyframes glitch-anim {
+            0% { clip-path: polygon(0 0%, 100% 0%, 100% 5%, 0 5%); }
+            10% { clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%); }
+            20% { clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%); }
+            30% { clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%); }
+            40% { clip-path: polygon(0 35%, 100% 35%, 100% 35%, 0 35%); }
+            50% { clip-path: polygon(0 45%, 100% 45%, 100% 46%, 0 46%); }
+            60% { clip-path: polygon(0 50%, 100% 50%, 100% 70%, 0 70%); }
+            70% { clip-path: polygon(0 70%, 100% 70%, 100% 70%, 0 70%); }
+            80% { clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%); }
+            90% { clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%); }
+            100% { clip-path: polygon(0 60%, 100% 60%, 100% 70%, 0 70%); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip-path: polygon(0 0%, 100% 0%, 100% 0%, 0 0%); }
+            10% { clip-path: polygon(0 60%, 100% 60%, 100% 65%, 0 65%); }
+            20% { clip-path: polygon(0 30%, 100% 30%, 100% 30%, 0 30%); }
+            30% { clip-path: polygon(0 90%, 100% 90%, 100% 90%, 0 90%); }
+            40% { clip-path: polygon(0 45%, 100% 45%, 100% 40%, 0 40%); }
+            50% { clip-path: polygon(0 55%, 100% 55%, 100% 45%, 0 45%); }
+            60% { clip-path: polygon(0 0%, 100% 0%, 100% 60%, 0 60%); }
+            70% { clip-path: polygon(0 80%, 100% 80%, 100% 85%, 0 85%); }
+            80% { clip-path: polygon(0 40%, 100% 40%, 100% 60%, 0 60%); }
+            90% { clip-path: polygon(0 50%, 100% 50%, 100% 70%, 0 70%); }
+            100% { clip-path: polygon(0 10%, 100% 10%, 100% 60%, 0 60%); }
+        }
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--accent);
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1.5s;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.2rem;
+            border-radius: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 0 var(--primary-dark);
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn:focus { outline: 2px solid var(--accent); }
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            transform: translateY(2px) scale(1.05);
+            box-shadow: 0 8px 24px var(--primary-dark);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            box-shadow: 0 4px 0 var(--accent-dark);
+        }
+        .btn-secondary:hover {
+            background: rgba(0,200,255,0.1);
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(2px) scale(1.05);
+            box-shadow: 0 8px 24px var(--accent-dark);
+        }
+        /* ===== Base Styles ===== */
+        /* ===== Typography ===== */
+        h1, h2, h3, h4 {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-dim);
+        }
+
+        /* ===== Layout ===== */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        section {
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        /* ===== About Section ===== */
+        .about {
+            background-color: var(--secondary-light);
+            position: relative;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text {
+            position: relative;
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .about-image:hover {
+            transform: scale(1.02);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* ===== Seasons Section ===== */
+        .seasons {
+            background-color: var(--secondary);
+        }
+
+        .season-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .season-tab {
+            padding: 0.5rem 1.5rem;
+            background-color: var(--secondary-light);
+            border: none;
+            color: var(--text-dim);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .season-tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .season-tab:hover:not(.active) {
+            background-color: var(--secondary);
+            color: var(--text);
+        }
+
+        .episodes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .episode-card {
+            background-color: var(--secondary-light);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(231, 37, 37, 0.1);
+        }
+
+        .episode-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .episode-card-header {
+            position: relative;
+        }
+
+        .episode-number {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            z-index: 2;
+        }
+
+        .episode-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .episode-card-body {
+            padding: 1.5rem;
+        }
+
+        .episode-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .episode-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .episode-rating {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .episode-description {
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            display: -webkit-box;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .episode-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            transition: color 0.3s ease;
+        }
+
+        .episode-link i {
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .episode-link:hover {
+            color: var(--accent);
+        }
+
+        .episode-link:hover i {
+            transform: translateX(3px);
+        }
+
+        /* ===== Characters Section ===== */
+        .characters {
+            background-color: var(--secondary-light);
+        }
+
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .villains {
+    background-color: var(--secondary);
+}
+.villains-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+}
+.villains .character-card {
+    border: 1px solid rgba(231, 37, 37, 0.2);
+}
+
+        .character-card {
+            background-color: var(--secondary);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+        }
+
+        .character-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .character-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .character-info {
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        .character-name {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .character-actor {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .character-description {
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            display: -webkit-box;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .character-status {
+            position: absolute;
+            top: -15px;
+            right: 15px;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-alive {
+            background-color: #2ecc71;
+        }
+
+        .status-unknown {
+            background-color: #f39c12;
+        }
+
+        /* ===== Upside Down Section ===== */
+        .upside-down {
+            background-color: var(--secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upside-down::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80') no-repeat center center/cover;
+            opacity: 0.03;
+            z-index: 1;
+        }
+
+        .upside-down-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .lore-item {
+            background-color: var(--secondary-light);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid var(--primary);
+        }
+
+        .lore-item h3 {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            background-color: var(--secondary-light);
+            padding: 4rem 0 2rem;
+            border-top: 1px solid rgba(231, 37, 37, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--secondary);
+            color: var(--text);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        /* ===== Responsive Styles ===== */
+        @media (max-width: 992px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-image {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-nav {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: var(--secondary-light);
+                transition: left 0.3s ease;
+                padding: 2rem;
+            }
+            
+            .main-nav.active {
+                left: 0;
+            }
+            
+            .main-nav ul {
+                flex-direction: column;
+            }
+            
+            .main-nav li {
+                margin: 1rem 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .glitch {
+                font-size: 3rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .episodes-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .characters-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== Easter Egg - Demogorgon ===== */
+        .demogorgon-egg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.imgur.com/JX5kH5T.png') no-repeat center center/contain;
+            z-index: 9999;
+            pointer-events: none;
+            animation: demogorgon-appear 0.5s ease-out forwards;
+            display: none;
+        }
+
+        @keyframes demogorgon-appear {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Music Button Tooltip */
+        #play-music-btn[aria-pressed="false"]:hover::after {
+            content: "Click to play theme";
+            position: absolute;
+            right: 110%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--secondary-light);
+            color: var(--accent);
+            padding: 0.4em 1em;
+            border-radius: 6px;
+            font-size: 0.9em;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px #000;
+            opacity: 0.95;
+        }
+        #play-music-btn[aria-pressed="true"] {
+            background: var(--accent-dark);
+            color: #fff;
+        }
+        #play-music-btn[aria-pressed="true"] i {
+            color: #fff;
+            animation: spin 1.2s linear infinite;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg);}
+        }
+    </style>
+</head>
+<body class="crt-effect">
+    <!-- Demogorgon Easter Egg (Hidden by default) -->
+    <div class="demogorgon-egg" aria-hidden="true"></div>
+    <!-- Header -->
+    <header id="main-header">
+        <div class="header-container">
+            <a href="#" class="logo" aria-label="Stranger Things Home">
+                <i class="fas fa-democrat"></i> STRANGER THINGS 
+            </a>
+            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open navigation menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#seasons">Seasons</a></li>
+                    <li><a href="#characters">Characters</a></li>
+                    <li><a href="#upside-down">Upside Down</a></li>
+                    <li><a href="#news">News</a></li>
+                    <li><a href="#villains">Villains</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- Hero Section -->
+    <section class="hero" aria-label="Stranger Things Hero Section">
+        <div class="hero-content">
+            <h1 class="glitch" data-text="STRANGER THINGS">STRANGER THINGS</h1>
+            <p class="hero-subtitle">The Complete Guide to Hawkins, the Upside Down, and Beyond</p>
+            <div class="hero-btns">
+                <a href="#about" class="btn btn-primary">Explore the Universe</a>
+                <a href="#characters" class="btn btn-secondary">Meet the Characters</a>
+            </div>
+        </div>
+    </section>
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2>About The Show</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Stranger Things is an American science fiction horror drama television series created by the Duffer Brothers. Set in the 1980s in the fictional town of Hawkins, Indiana, the show follows a group of kids who encounter supernatural forces and secret government exploits.</p>
+                    <p>When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl. The series is a tribute to 80s pop culture, drawing inspiration from the works of Steven Spielberg, John Carpenter, and Stephen King.</p>
+                    <p>Since its debut in 2016, Stranger Things has become a global phenomenon, praised for its character development, tone, acting, soundtrack, and homages to 1980s films and television.</p>
+                    <a href="#" class="btn btn-primary" style="margin-top: 1.5rem;">Learn More</a>
+                </div>
+                <div class="about-image">
+                    <img src="https://4kwallpapers.com/images/walls/thumbs_3t/18818.jpg" alt="Stranger Things Cast">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Seasons Section -->
+    <section class="seasons" id="seasons">
+        <div class="container">
+            <h2>Seasons & Episodes</h2>
+            
+            <div class="season-tabs">
+                <button class="season-tab active">Season 1</button>
+                <button class="season-tab">Season 2</button>
+                <button class="season-tab">Season 3</button>
+                <button class="season-tab">Season 4</button>
+                <button class="season-tab">Season 5</button>
+            </div>
+            
+            <div class="episodes-grid">
+                <!-- Episode 1 -->
+                <div class="episode-card">
+                    <div class="episode-card-header">
+                        <div class="episode-number">1</div>
+                        <img src="https://images.unsplash.com/photo-1585620385456-4759f9b5c7d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Episode 1" class="episode-image">
+                    </div>
+                    <div class="episode-card-body">
+                        <h3 class="episode-title">Chapter One: The Vanishing of Will Byers</h3>
+                        <div class="episode-meta">
+                            <span>July 15, 2016</span>
+                            <span class="episode-rating">★ 8.7/10</span>
+                        </div>
+                        <p class="episode-description">On his way home from a friend's house, young Will sees something terrifying. Nearby, a sinister secret lurks in the depths of a government lab.</p>
+                        <a href="#" class="episode-link">View Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Episode 2 -->
+                <div class="episode-card">
+                    <div class="episode-card-header">
+                        <div class="episode-number">2</div>
+                        <img src="https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Episode 2" class="episode-image">
+                    </div>
+                    <div class="episode-card-body">
+                        <h3 class="episode-title">Chapter Two: The Weirdo on Maple Street</h3>
+                        <div class="episode-meta">
+                            <span>July 15, 2016</span>
+                            <span class="episode-rating">★ 8.6/10</span>
+                        </div>
+                        <p class="episode-description">Lucas, Mike and Dustin try to talk to the girl they found in the woods. Hopper questions an anxious Joyce about an unsettling phone call.</p>
+                        <a href="#" class="episode-link">View Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Episode 3 -->
+                <div class="episode-card">
+                    <div class="episode-card-header">
+                        <div class="episode-number">3</div>
+                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=2048&q=80" alt="Episode 3" class="episode-image">
+                    </div>
+                    <div class="episode-card-body">
+                        <h3 class="episode-title">Chapter Three: Holly, Jolly</h3>
+                        <div class="episode-meta">
+                            <span>July 15, 2016</span>
+                            <span class="episode-rating">★ 8.8/10</span>
+                        </div>
+                        <p class="episode-description">An increasingly concerned Nancy looks for Barb and finds out what Jonathan's been up to. Joyce is convinced Will is trying to talk to her.</p>
+                        <a href="#" class="episode-link">View Details <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Characters Section -->
+    <section class="characters" id="characters">
+        <div class="container">
+            <h2>Main Characters</h2>
+            
+            <div class="characters-grid">
+                <!-- Eleven -->
+                <div class="character-card">
+                    <img src="https://th.bing.com/th/id/OIP.Z9zx-ma3ueqk_61IA5MwdgHaHa?w=181&h=182&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3" height="200px" alt="Eleven" class="character-image">
+                    <div class="character-info">
+                        <span class="character-status status-alive">Alive</span>
+                        <h3 class="character-name">Eleven</h3>
+                        <span class="character-actor">Millie Bobby Brown</span>
+                        <p class="character-description">A young girl with psychokinetic abilities who escapes from Hawkins National Laboratory. She befriends Mike and his friends and helps them search for Will.</p>
+                        <a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">View Profile</a>
+                    </div>
+                </div>
+                
+                <!-- Mike Wheeler -->
+                <div class="character-card">
+                    <img src="https://th.bing.com/th/id/OIP.UsQ_SdywD0FAxg8IAfFIvgHaHa?w=180&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7" alt="Mike Wheeler" class="character-image">
+                    <div class="character-info">
+                        <span class="character-status status-alive">Alive</span>
+                        <h3 class="character-name">Mike Wheeler</h3>
+                        <span class="character-actor">Finn Wolfhard</span>
+                        <p class="character-description">The leader of the Party who becomes Eleven's closest friend and love interest. He is determined to find his missing best friend, Will.</p>
+                        <a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">View Profile</a>
+                    </div>
+                </div>
+                
+                <!-- Dustin Henderson -->
+                <div class="character-card">
+                    <img src="https://th.bing.com/th/id/OIP.5P2Vp4FHDSgrEJIJbuP8YQHaQC?w=114&h=180&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3" alt="Dustin Henderson" class="character-image">
+                    <div class="character-info">
+                        <span class="character-status status-alive">Alive</span>
+                        <h3 class="character-name">Dustin Henderson</h3>
+                        <span class="character-actor">Gaten Matarazzo</span>
+                        <p class="character-description">A member of the Party known for his humor and scientific curiosity. He has cleidocranial dysplasia, which affects his teeth growth.</p>
+                        <a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">View Profile</a>
+                    </div>
+                </div>
+                
+                <!-- Lucas Sinclair -->
+                <div class="character-card">
+                    <img src="https://th.bing.com/th/id/OIP.sWtzR-1p22wdgNFIKYTzuwHaJ3?w=133&h=180&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3" alt="Lucas Sinclair" class="character-image">
+                    <div class="character-info">
+                        <span class="character-status status-alive">Alive</span>
+                        <h3 class="character-name">Lucas Sinclair</h3>
+                        <span class="character-actor">Caleb McLaughlin</span>
+                        <p class="character-description">A pragmatic member of the Party who is initially suspicious of Eleven but later becomes her friend. He's skilled with a wrist rocket.</p>
+                        <a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">View Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Villains Section -->
+<section class="villains" id="villains">
+    <div class="container">
+        <h2>Main Villains</h2>
+        <div class="villains-grid"></div>
+    </div>
+</section>
+    <!-- Upside Down Section -->
+    <section class="upside-down" id="upside-down">
+        <div class="container upside-down-content">
+            <h2>The Upside Down</h2>
+            
+            <div class="lore-item">
+                <h3>What is the Upside Down?</h3>
+                <p>The Upside Down is a parallel dimension existing in tandem with the human world. It's a dark, decaying version of Hawkins with floating particles in the air, a perpetually overcast sky, and an abundance of fleshy vines covering the landscape.</p>
+                <p>The dimension is home to various creatures, including Demogorgons and the Mind Flayer. The atmosphere is toxic to humans, requiring protective gear for extended exposure.</p>
+            </div>
+            
+            <div class="lore-item">
+                <h3>How to Enter the Upside Down</h3>
+                <p>There are several known ways to access the Upside Down:</p>
+                <ul style="margin-left: 1.5rem; color: var(--text-dim); margin-bottom: 1rem;">
+                    <li>Through naturally occurring gates (rare)</li>
+                    <li>Via artificially created gates by Eleven or the Hawkins Lab</li>
+                    <li>Through temporary portals created by certain creatures</li>
+                    <li>By being taken there by a Demogorgon</li>
+                </ul>
+                <p>The dimension seems to have some connection to Eleven's powers and the experiments conducted at Hawkins National Laboratory.</p>
+            </div>
+            
+            <div class="lore-item">
+                <h3>Creatures of the Upside Down</h3>
+                <p>The Upside Down is inhabited by several dangerous creatures:</p>
+                <ul style="margin-left: 1.5rem; color: var(--text-dim); margin-bottom: 1rem;">
+                    <li><strong>Demogorgons:</strong> Humanoid predators with flower-like faces</li>
+                    <li><strong>Demodogs:</strong> Younger, dog-like versions of Demogorgons</li>
+                    <li><strong>The Mind Flayer:</strong> A shadowy entity that controls other creatures</li>
+                    <li><strong>Vecna:</strong> A powerful humanoid with psychic abilities</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Explore</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About the Show</a></li>
+                        <li><a href="#">Seasons & Episodes</a></li>
+                        <li><a href="#">Character Guide</a></li>
+                        <li><a href="#">Upside Down Lore</a></li>
+                        <li><a href="#">Hawkins Map</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">News & Updates</a></li>
+                        <li><a href="#">Episode Guide</a></li>
+                        <li><a href="#">Trivia & Facts</a></li>
+                        <li><a href="#">Soundtrack</a></li>
+                        <li><a href="#">Merchandise</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Connect</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Contribute</a></li>
+                        <li><a href="#">Fan Community</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Use</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Follow Us</h3>
+                    <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1rem;">Join our Stranger Things fan community across social media.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-reddit-alien"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Stranger Things Universe. This is an unofficial fan website. All Stranger Things content is property of Netflix.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Music & Interactivity -->
+    <audio id="bg-music" src="str_theme_original.mp3" loop preload="auto"></audio>
+    <button id="play-music-btn" aria-pressed="false" aria-label="Play Stranger Things Theme"
+        style="position:fixed;bottom:24px;right:24px;z-index:9999;background:rgba(15,15,26,0.95);color:#fff;border:none;padding:0.7em 1.2em;border-radius:8px;box-shadow:0 2px 8px #000;cursor:pointer;font-size:1rem;display:flex;align-items:center;gap:0.7em;">
+        <i class="fas fa-music"></i> <span>Play Theme</span>
+    </button>
+    <!-- Villains Section -->
+    <section class="villains" id="villains">
+        <div class="container">
+            <h2>Main Villains</h2>
+            <div class="villains-grid"></div>
+        </div>
+    </section>
+    <script>
+// ======= Season Data (Sourced from IMDB/Wikipedia) =======
+const seasonsData = [
+    // Season 1
+    [
+        {
+            number: 1,
+            title: "Chapter One: The Vanishing of Will Byers",
+            date: "July 15, 2016",
+            rating: "★ 8.7/10",
+            desc: "On his way home from a friend's house, young Will sees something terrifying. Nearby, a sinister secret lurks in the depths of a government lab.",
+            img: "https://occ-0-6247-2186.1.nflxso.net/dnm/api/v6/9pS1daC2n6UGc3dUogvWIPMR_OU/AAAABWIMFKeddG8n-_Rko4A2PUahKlgSIxFQSN9C48FzJvLwReF8Ry0T5vI5bTA5tIDMxLt4iwp8dBr8iJCwKiqn2UfeI1PeJH8_T7DwaFZM03KFe-Kv8dFcsw8i.jpg?r=e38"
+        },
+        {
+            number: 2,
+            title: "Chapter Two: The Weirdo on Maple Street",
+            date: "July 15, 2016",
+            rating: "★ 8.6/10",
+            desc: "Lucas, Mike and Dustin try to talk to the girl they found in the woods. Hopper questions an anxious Joyce about an unsettling phone call.",
+            img: "https://occ-0-6247-2186.1.nflxso.net/dnm/api/v6/9pS1daC2n6UGc3dUogvWIPMR_OU/AAAABRLKKpt9utEJ3bu-E-TonM1hQllvHQNILHJSiLweBAnzNMNrLNbEmpr4qJknXFZTeCuWWZffCHF6hJ-kTzJOkuhpXAy7kS3_zgLEkZqcbQLgeue1ihK5FMLI.jpg?r=cc9"
+        },
+        {
+            number: 3,
+            title: "Chapter Three: Holly, Jolly",
+            date: "July 15, 2016",
+            rating: "★ 8.8/10",
+            desc: "An increasingly concerned Nancy looks for Barb and finds out what Jonathan's been up to. Joyce is convinced Will is trying to talk to her.",
+            img: "https://occ-0-6247-2186.1.nflxso.net/dnm/api/v6/9pS1daC2n6UGc3dUogvWIPMR_OU/AAAABaTxc1HToU6ZkVKAaFUtUCWIU65fPnXtG2KpFswzdApZliicw9YGxHZ3kHaqhmxSz5VC1e4Xfs0z3GtD2-iMqmZhzgjQcqG-HdKpEbVd2Yn9m2tgHaspBuK_.jpg?r=8da"
+        },
+        {
+            number: 4,
+            title: "Chapter Four: The Body",
+            date: "July 15, 2016",
+            rating: "★ 8.9/10",
+            desc: "Refusing to believe Will is dead, Joyce tries to connect with her son. The boys give Eleven a makeover. Nancy and Jonathan form an unlikely alliance.",
+            img: "https://occ-0-6247-2186.1.nflxso.net/dnm/api/v6/9pS1daC2n6UGc3dUogvWIPMR_OU/AAAABfMEB7L1y4rwvAIbzmJb1f4YZsRcUm-YURZkt3NzlAy7V8rQ41f6fivkRd8xH9NGcd-3pVOW2OsLRR874bsEMl6DSG6Bo9lh1SkaaD3Y2HiiN8XJFY2FiXWV.jpg?r=6ad"        },
+        {
+            number: 5,
+            title: "Chapter Five: The Flea and the Acrobat",
+            date: "July 15, 2016",
+            rating: "★ 8.8/10",
+            desc: "Hopper breaks into the lab while Nancy and Jonathan confront the force that took Will. The boys ask Mr. Clarke how to travel to another dimension.",
+            img :"https://occ-0-6247-2186.1.nflxso.net/dnm/api/v6/9pS1daC2n6UGc3dUogvWIPMR_OU/AAAABZ4T59nVRHKS1lBQUe5oXuUMVcqOglLZlGxCI57zIzrhId0EzwY4bIFHBSARfv2TzlzBhniSh33c01wdNVMvLnWb6N-lgr4KC8GU356ZHKvVc-van_0g2Pqh.jpg?r=6d4"        },
+        {
+            number: 6,
+            title: "Chapter Six: The Monster",
+            date: "July 15, 2016",
+            rating: "★ 9.0/10",
+            desc: "A frantic Jonathan looks for Nancy in the darkness, but Steve's looking for her, too. Hopper and Joyce uncover the truth about the lab's experiments.",
+            img: "https://occ-0-6247-2186.1.nflxso.net/dnm/api/v6/9pS1daC2n6UGc3dUogvWIPMR_OU/AAAABX4FAZAhZD3EOWlQaXlNFFcF3YfOE5Kiwk_LMIvQW3yNGpLB7sE8EeaXyurr-e9Sr1bhlOL75_FevIJM36OwAD4JnD7AUmPihaqsnJXq9vCxN9OBTcpEGJ2Z.jpg?r=3df"
+        },
+        {
+            number: 7,
+            title: "Chapter Seven: The Bathtub",
+            date: "July 15, 2016",
+            rating: "★ 9.1/10",
+            desc: "Eleven struggles to reach Will, while Lucas warns the others that 'the bad men are coming.' Nancy and Jonathan show the police what they found.",
+            img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 8,
+            title: "Chapter Eight: The Upside Down",
+            date: "July 15, 2016",
+            rating: "★ 9.2/10",
+            desc: "Dr. Brenner holds Hopper and Joyce for questioning while the boys wait with Eleven in the gym. Back at the lab, a desperate search begins.",
+            img: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=800&q=80"
+        }
+    ],
+    // Season 2
+    [
+        {
+            number: 1,
+            title: "Chapter One: MADMAX",
+            date: "Oct 27, 2017",
+            rating: "★ 8.3/10",
+            desc: "As the town preps for Halloween, a high-scoring rival shakes up the arcade, and a skeptical Hopper inspects a field of rotting pumpkins.",
+            img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 2,
+            title: "Chapter Two: Trick or Treat, Freak",
+            date: "Oct 27, 2017",
+            rating: "★ 8.5/10",
+            desc: "After Will sees something terrible on trick-or-treat night, Mike wonders whether Eleven's still out there. Nancy wrestles with the truth about Barb.",
+            img: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b43?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 3,
+            title: "Chapter Three: The Pollywog",
+            date: "Oct 27, 2017",
+            rating: "★ 8.5/10",
+            desc: "Dustin adopts a strange new pet, and Eleven grows increasingly impatient. A well-meaning Bob urges Will to stand up to his fears.",
+            img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 4,
+            title: "Chapter Four: Will the Wise",
+            date: "Oct 27, 2017",
+            rating: "★ 8.7/10",
+            desc: "An ailing Will opens up to Joyce—with disturbing results. While Hopper searches for the truth, Eleven makes a connection with her past.",
+            img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 5,
+            title: "Chapter Five: Dig Dug",
+            date: "Oct 27, 2017",
+            rating: "★ 8.7/10",
+            desc: "Nancy and Jonathan swap conspiracy theories with a new ally as Eleven searches for someone from her past. 'Bob the Brain' tackles a difficult problem.",
+            img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 6,
+            title: "Chapter Six: The Spy",
+            date: "Oct 27, 2017",
+            rating: "★ 8.8/10",
+            desc: "Will's connection to a shadowy evil grows stronger, but no one's quite sure how to stop it. Elsewhere, Dustin and Steve forge an unlikely bond.",
+            img: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 7,
+            title: "Chapter Seven: The Lost Sister",
+            date: "Oct 27, 2017",
+            rating: "★ 6.1/10",
+            desc: "Psychic visions draw Eleven to a band of violent outcasts and an angry girl with a shadowy past.",
+            img: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b43?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 8,
+            title: "Chapter Eight: The Mind Flayer",
+            date: "Oct 27, 2017",
+            rating: "★ 9.3/10",
+            desc: "An unlikely hero steps forward when a deadly development puts the Hawkins Lab on lockdown, trapping Will and several others inside.",
+            img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 9,
+            title: "Chapter Nine: The Gate",
+            date: "Oct 27, 2017",
+            rating: "★ 9.2/10",
+            desc: "Eleven makes plans to finish what she started while the survivors turn up the heat on the monstrous force that's holding Will hostage.",
+            img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
+        }
+    ],
+    // Season 3
+    [
+        {
+            number: 1,
+            title: "Chapter One: Suzie, Do You Copy?",
+            date: "July 4, 2019",
+            rating: "★ 8.1/10",
+            desc: "Summer brings new jobs and budding romance. But the mood shifts when Dustin's radio picks up a Russian broadcast, and Will senses something is wrong.",
+            img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 2,
+            title: "Chapter Two: The Mall Rats",
+            date: "July 4, 2019",
+            rating: "★ 7.8/10",
+            desc: "Nancy and Jonathan follow a lead, Steve and Robin sign on to a secret mission, and Max and Eleven go shopping. A rattled Billy has troubling visions.",
+            img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 3,
+            title: "Chapter Three: The Case of the Missing Lifeguard",
+            date: "July 4, 2019",
+            rating: "★ 8.2/10",
+            desc: "With El and Max looking for Billy, Will declares a day without girls. Steve and Dustin go on a stakeout, and Joyce and Hopper return to Hawkins Lab.",
+            img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 4,
+            title: "Chapter Four: The Sauna Test",
+            date: "July 4, 2019",
+            rating: "★ 8.8/10",
+            desc: "A code red brings the gang together to face a frighteningly familiar evil. Karen urges Nancy to keep digging, and Robin finds a useful map.",
+            img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 5,
+            title: "Chapter Five: The Flayed",
+            date: "July 4, 2019",
+            rating: "★ 8.4/10",
+            desc: "Strange surprises lurk inside an old farmhouse and deep beneath the Starcourt Mall. The Mind Flayer is gathering strength.",
+            img: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b43?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 6,
+            title: "Chapter Six: E Pluribus Unum",
+            date: "July 4, 2019",
+            rating: "★ 8.7/10",
+            desc: "Dr. Alexei reveals what the Russians have been building, and Eleven sees where Billy has been. Dustin and Erica stage a daring rescue.",
+            img: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 7,
+            title: "Chapter Seven: The Bite",
+            date: "July 4, 2019",
+            rating: "★ 8.8/10",
+            desc: "With time running out, the gang splits up to investigate. Will and Mike try to save Eleven, and Hopper and Joyce confront the Russians.",
+            img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 8,
+            title: "Chapter Eight: The Battle of Starcourt",
+            date: "July 4, 2019",
+            rating: "★ 9.0/10",
+            desc: "Terror reigns in the food court when the Mind Flayer comes to collect. The survivors must band together to save Hawkins—and themselves.",
+            img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80"
+        }
+    ],
+    // Season 4
+    [
+        {
+            number: 1,
+            title: "Chapter One: The Hellfire Club",
+            date: "May 27, 2022",
+            rating: "★ 8.1/10",
+            desc: "Still reeling from the events of last year, the gang tries to move on. But a new horror is surfacing in Hawkins.",
+            img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 2,
+            title: "Chapter Two: Vecna's Curse",
+            date: "May 27, 2022",
+            rating: "★ 8.3/10",
+            desc: "A shaken Eddie tells the gang what happened. Dr. Owens delivers a message to Eleven.",
+            img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 3,
+            title: "Chapter Three: The Monster and the Superhero",
+            date: "May 27, 2022",
+            rating: "★ 8.4/10",
+            desc: "Murray and Joyce fly to Alaska. Eleven faces consequences at school and in her mind.",
+            img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 4,
+            title: "Chapter Four: Dear Billy",
+            date: "May 27, 2022",
+            rating: "★ 9.7/10",
+            desc: "Max is in grave danger. The group races against time to save her from Vecna's curse.",
+            img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 5,
+            title: "Chapter Five: The Nina Project",
+            date: "May 27, 2022",
+            rating: "★ 8.6/10",
+            desc: "Owens takes Eleven to Nevada, where she must confront her past. The Hawkins kids investigate a new lead.",
+            img: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b43?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 6,
+            title: "Chapter Six: The Dive",
+            date: "May 27, 2022",
+            rating: "★ 8.7/10",
+            desc: "The group dives into danger to uncover the truth about the Upside Down.",
+            img: "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 7,
+            title: "Chapter Seven: The Massacre at Hawkins Lab",
+            date: "May 27, 2022",
+            rating: "★ 9.3/10",
+            desc: "Shocking truths are revealed as Eleven relives her past at Hawkins Lab.",
+            img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 8,
+            title: "Chapter Eight: Papa",
+            date: "July 1, 2022",
+            rating: "★ 8.7/10",
+            desc: "Eleven makes a difficult decision. The group prepares for the final battle.",
+            img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80"
+        },
+        {
+            number: 9,
+            title: "Chapter Nine: The Piggyback",
+            date: "July 1, 2022",
+            rating: "★ 9.1/10",
+            desc: "With Vecna closing in, the group bands together for a final stand.",
+            img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
+        }
+    ],
+    // Season 5 (Placeholder, as it's not released yet)
+    [
+        {
+            number: 1,
+            title: "TBA",
+            date: "TBA",
+            rating: "★ TBA",
+            desc: "Season 5 is coming soon! Stay tuned for more adventures in Hawkins.",
+            img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80"
+        }
+    ]
+];
+
+// ======= Character Data (Add this after seasonsData) =======
+const charactersData = [
+    {
+        name: "Eleven",
+        actor: "Millie Bobby Brown",
+        status: "Alive",
+        img: "https://th.bing.com/th/id/OIP.Z9zx-ma3ueqk_61IA5MwdgHaHa?w=181&h=182&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3",
+        intro: "A young girl with psychokinetic abilities who escapes from Hawkins National Laboratory. She befriends Mike and his friends and helps them search for Will."
+    },
+    {
+        name: "Mike Wheeler",
+        actor: "Finn Wolfhard",
+        status: "Alive",
+        img: "https://th.bing.com/th/id/OIP.UsQ_SdywD0FAxg8IAfFIvgHaHa?w=180&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7",
+        intro: "The leader of the Party who becomes Eleven's closest friend and love interest. He is determined to find his missing best friend, Will."
+    },
+    {
+        name: "Dustin Henderson",
+        actor: "Gaten Matarazzo",
+        status: "Alive",
+        img: "https://th.bing.com/th/id/OIP.5P2Vp4FHDSgrEJIJbuP8YQHaQC?w=114&h=180&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3",
+        intro: "A member of the Party known for his humor and scientific curiosity. He has cleidocranial dysplasia, which affects his teeth growth."
+    },
+    {
+        name: "Lucas Sinclair",
+        actor: "Caleb McLaughlin",
+        status: "Alive",
+        img: "https://th.bing.com/th/id/OIP.sWtzR-1p22wdgNFIKYTzuwHaJ3?w=133&h=180&c=7&r=0&o=7&dpr=1.1&pid=1.7",
+        intro: "A pragmatic member of the Party who is initially suspicious of Eleven but later becomes her friend. He's skilled with a wrist rocket."
+    },
+    {
+        name: "Will Byers",
+        actor: "Noah Schnapp",
+        status: "Alive",
+        img: "https://tse4.mm.bing.net/th/id/OIP.2kk0zQldQ4RrHrPpHhy52AAAAA?rs=1&pid=ImgDetMain&o=7&rm=3",
+        intro: "The boy who vanishes in season 1, whose disappearance sets off the events of the series. Sensitive and artistic, he struggles with trauma from the Upside Down."
+    },
+    {
+        name: "Max Mayfield",
+        actor: "Sadie Sink",
+        status: "Alive",
+        img: "https://tse2.mm.bing.net/th/id/OIP.M35atW5WSGLgnCEQ0Xt2uwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
+        intro: "A confident and skilled skateboarder who joins the Party in season 2. She quickly becomes friends with the group and forms a close bond with Lucas."
+    },
+    {
+        name: "Joyce Byers",
+        actor: "Winona Ryder",
+        status: "Alive",
+        img: "https://th.bing.com/th/id/OIP.aiOme4BLgSzt7SuXUinVxAHaIF?w=179&h=195&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3",
+        intro: "Will and Jonathan's devoted mother, known for her fierce determination and willingness to do anything to protect her children."
+    },
+    {
+        name: "Jim Hopper",
+        actor: "David Harbour",
+        status: "Alive",
+        img: "https://th.bing.com/th/id/OIP.edjtO8aZ87UWxCQ47Vc9iwHaHa?w=184&h=185&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3",
+        intro: "The chief of Hawkins Police Department. Gruff but caring, Hopper becomes a father figure to Eleven and a key protector of the kids."
+    },
+    {
+        name: "Nancy Wheeler",
+        actor: "Natalia Dyer",
+        status: "Alive",
+        img: "https://th.bing.com/th/id/OIP.50LKBfzOJ1794JNr7x9OWgAAAA?w=178&h=197&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3",
+        intro: "Mike's older sister, a smart and determined high school student who becomes a fearless investigator into Hawkins' mysteries."
+    },
+    {
+        name: "Jonathan Byers",
+        actor: "Charlie Heaton",
+        status: "Alive",
+        img: "https://th.bing.com/th/id/OIP.a1ZQD5k1In6GDOd8rWC3SgHaHd?w=187&h=188&c=7&r=0&o=7&dpr=1.1&pid=1.7",
+        intro: "Will's older brother, a quiet and artistic teenager who is fiercely protective of his family."
+    },
+    {
+        name: "Steve Harrington",
+        actor: "Joe Keery",
+        status: "Alive",
+        img: "https://th.bing.com/th/id/OIP.68ZykioEzzCfB2mHE8-yQgHaJ4?w=202&h=270&c=7&r=0&o=5&dpr=1.1&pid=1.7",
+        intro: "Initially the popular high school boyfriend, Steve becomes a beloved babysitter and hero, protecting the kids from supernatural threats."
+    },
+    {
+        name: "Robin Buckley",
+        actor: "Maya Hawke",
+        status: "Alive",
+        img: "https://th.bing.com/th/id/OIP.em-UgpthTGbfs7uACHV0LQHaHa?w=215&h=215&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3",
+        intro: "Steve's witty and resourceful coworker at Scoops Ahoy, who becomes a trusted member of the group."
+    },
+    {
+        name: "Billy Hargrove",
+        actor: "Dacre Montgomery",
+        status: "Deceased",
+        img: "data:image/webp;base64,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",
+        intro: "Max's troubled stepbrother, whose aggressive behavior masks deep pain. He becomes a tragic figure in season 3."
+    },
+    {
+        name: "Dr. Martin Brenner",
+        actor: "Matthew Modine",
+        status: "Unknown",
+        img: "data:image/webp;base64,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",
+        intro: "The enigmatic and morally ambiguous scientist in charge of Hawkins Lab, responsible for Eleven's upbringing and the opening of the gate."
+    }
+];
+
+// ======= DOM Elements =======
+const episodesGrid = document.querySelector('.episodes-grid');
+const seasonTabs = document.querySelectorAll('.season-tab');
+
+// ======= Render Episodes =======
+function renderEpisodes(seasonIndex) {
+    episodesGrid.innerHTML = '';
+    seasonsData[seasonIndex].forEach(ep => {
+        episodesGrid.innerHTML += `
+        <div class="episode-card">
+            <div class="episode-card-header">
+                <div class="episode-number">${ep.number}</div>
+                <img src="${ep.img}" alt="Episode ${ep.number}" class="episode-image">
+            </div>
+            <div class="episode-card-body">
+                <h3 class="episode-title">${ep.title}</h3>
+                <div class="episode-meta">
+                    <span>${ep.date}</span>
+                    <span class="episode-rating">${ep.rating}</span>
+                </div>
+                <p class="episode-description">${ep.desc}</p>
+                <a href="#" class="episode-link">View Details <i class="fas fa-chevron-right"></i></a>
+            </div>
+        </div>
+        `;
+    });
+}
+
+// ======= Season Tab Clicks =======
+seasonTabs.forEach((tab, idx) => {
+    tab.addEventListener('click', () => {
+        seasonTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        renderEpisodes(idx);
+    });
+});
+
+// ======= Initial Render =======
+renderEpisodes(0);
+
+// ======= Render Characters =======
+const charactersGrid = document.querySelector('.characters-grid');
+function renderCharacters() {
+    charactersGrid.innerHTML = '';
+    charactersData.forEach(char => {
+        charactersGrid.innerHTML += `
+        <div class="character-card">
+            <img src="${char.img}" alt="${char.name}" class="character-image">
+            <div class="character-info">
+                <span class="character-status status-${char.status.toLowerCase()}">${char.status}</span>
+                <h3 class="character-name">${char.name}</h3>
+                <span class="character-actor">${char.actor}</span>
+                <p class="character-description">${char.intro}</p>
+                <a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">View Profile</a>
+            </div>
+        </div>
+        `;
+    });
+}
+renderCharacters();
+// ======= Villain Data =======
+const villainsData = [
+    {
+        name: "The Demogorgon",
+        status: "Deceased",
+        img: "https://www.cheatsheet.com/wp-content/uploads/2021/10/E2FC778F-E707-4016-8DB5-C51FAF983DBE.jpeg",
+        intro: "A terrifying creature from the Upside Down, the Demogorgon is the main antagonist of Season 1. It preys on humans and can travel between dimensions."
+    },
+    {
+        name: "The Mind Flayer",
+        status: "Unknown",
+        img: "https://static3.srcdn.com/wordpress/wp-content/uploads/2019/10/Stranger-Things-season-3-Mind-Flayer.jpg",
+        intro: "A monstrous entity from the Upside Down, the Mind Flayer seeks to invade and dominate the human world, controlling hosts and creating an army."
+    },
+    {
+        name: "Vecna (Henry Creel / One)",
+        status: "Alive",
+        img: "https://otakukart.com/wp-content/uploads/2022/06/Vecna-in-Stranger-Things.jpg",
+        intro: "Once a human named Henry Creel, Vecna is a powerful psychic and the main antagonist of Season 4. He manipulates minds and kills from the Upside Down."
+    },
+    {
+        name: "Billy Hargrove (Flayed)",
+        status: "Deceased",
+        img: "data:image/webp;base64,UklGRngVAABXRUJQVlA4IGwVAACQcACdASroAOgAPp1Kn0ulpCalI/JrUNATiWds0zA7gdU/nEfWtRr5mS+d/6Xgf+i7Pc4P3H/wHGHxS/UxeLKt+vqFfOKPT+CL9334XozfrkV9jKvFNbW5ccDtsfiD2kx3OlzxI9Kz3AkYRuPYTTALO0jUQTBAXKAvdhFljrliLu7CnPJh1bQSC5hVU+5W5AltZlQJCr//0ggftd8PSvurwbhijewfE1nNMXiZ2xG/uzm0gVOO2vnL3CI5jPQ3MdOuvY4v169uneg7kGC9GnlKA25yXbZq+jFyBLb4Ym+SeE9X9sO20TTyGKSw75Hyq4jKYBqcehmySzCPv6aJkB31Ab7R4GnNrjLrcjWzW/iZno57HGy6g8TO7H8QifEG1EE6nZuP96UgcbT+B4SH4noX0YOSMGp0qKpoWSrFaaxZIpzDuiUx/YAZOSUIRNB2/BfVyZq71kkJA2scRMair+njKeGomQ6xXuyHNfC5AJkpYrQgrPPuenyJpI8JvgD3c+NaYb6g7kUycRUiTx6PCMozVubt8bliz1HRAGf2Jc/iHlTbQmPdGM7u90K6DgR6wBj4hmhLvMDO66sVKJYaEBI91z9bLF7vLDIjCKGAW2j+TjOAaO6iXuF3dxVTA/OUl9i+12QqnBCiUqHXH+3S9yOMyXshstitRAEJnwd6HBGt6FahAy2QluFhZ1kdrwvkpKuWn3btSwyi+f5NuICC3USoNSlKBOaPlQSBtgDhYTi/maIeYiCkw6nPLCsvTYUtmuvcvukmHPJzZgap5qenaWOW2WNW2GOfdEM8wHB8KW0YYqbua52EoN1x5E1oiWiVGO9i9+Yq2hTu2dWM5i9acKQLxlzO7tsxrW9tbKi2wtfibwkZwHlMKHnHIS/wLzCFAKMNrw2NNLsjT4h19xywPhLsp5+f4rIroirUQuUqzy/s5Fn+93LRSjJkkT143vXuJlgPeji/DITRfqfxILLo8olv/VDzpzzjb/ilAGPJFdiZcbLmRtE6ddLNmRlEdC4J7FLTdTffQVMDOaHOyxtZbXwC6CZUBjSefEuijcOYcpY1pbq1tnkrUXtxSmY3Q4br85MXedvs4DwAlOjsMD/u9eHbVzPuozNUeTVV7Ubwa4CKd6J4r8SOICgkTr6oMQz/aKXVaJl6FrFK6ZgWQsD24uAwvSZ44krhlpgcUSlTKXMTjP7BhEjb8fDBzy4NdgAA/vHn6DL09jNlXmDcZ55uTY5x6OAn9C6zVRliIWC6acW4dHWVn48KH2JL1i97mR697IIr2eaWTWVVVXhXFPQqfxMTelz2t7y0Tgevj8M3D/YIxF0Ciqo0yL946PuA/hQXiKCRKQTvPdgoDY1VCJvssO9DdmzCrSpd8Whw8IZgg/cuCrTF+rKY8m9ShWNDYdgWDdBAQBe2mO4bQA3CrDdUiMnk7wNsEUWcn+U9dWWbG4JkMv9gkKSGAinnN7iVD7OPRvvf1b92zRmpMEkj0bYucaQMrsNqncJfOcB4EwlULuA7pPKFMgNM8Uud4FLoK/5vK6XHZEDqKNklKo8nYFVp0xALME9CnLD1qe8SHjlZfkcWdAKHPe3odyhYbQAVMuo5G3HJRVNTRJ2sipCYjjrS4W/ey+zzkVkelhQ+lP5RmgwWMDWNaF/GdAoPaSoosT6c5WR19TOOmck5Mgv5OGQPv6otzihcj0NIHRUaNI6XatnDlmGzpG+l6ItMqKo9D2nF4A4rFSuy3rJxxRDuQ2U9yjjz5cvcyVdBbvs5+ta3TcMHbMxcaSW4qV6N+Df1vVJLeJtSoPKLc66Ouv9KJJxm2pB5uFvuTMPxLGlPFjeS3emImvMBYHMzNTP+yVLj3yu7gn4pW5PDdMvErb2pI8lonjV5IT2USv1WBDh46xMJwRDqebB7NVX3/3T0c4gGmuaR3MaefQfiUH3hoBEYQwU2sA5QKVVgb5YpUEOT6JLkEN4Jouyd7fA0lxr0l2kXnBbe0fv2U3fu+iAM2pRCmTP5j797QyQvc/QtHigjF0adQvUAFSDwhU082aEThKF0lsBibJUeYK5IWX99CEX+FhMxLBvAhWyyw++theNTe+o53YNJdZtyQUkgCquZuGv97ptYx9OeB4AkzSAhH6gf2bfnmXgsdUW1PW6inqJT+lxPmR1fBahYj5/iq1BuSabuLSizrFLDtCG/K53k2+JrcG1x+SVxYrzSsTwEbV9+rUqqHeM/RJC3QDGJZ8/0QQdmJUDWh0B1Sny9rwvDzPsnJoECpILSKbwriwnIE3oaelSe/Wi7/tKogWp+HkLIGzsSrfNFFwmBTebCyTBnl15mg6GsuflH90evu0Wo8h9zjV2SAEjmuAo1at8ebL42s1qjsMuv1c9NKNj7LZelTki0kpnHvM2T6a94FELcIiQbxhc77beUV6fB9bm8EnZmjSADxFNE4BLDkJoQJOPr5nscwYth15r5f6nHob4QaUW03AKnmuTDF40/8P5hDoB0qOw0frEWIeQN3jyEpkTzIAUsZFLqUVi5RsECu1lFPLuvJ/zI5XTJbZkT3HJFhxgWpJADR7h8bAf85pGAAG1aNj/bEMCSU3mR7DB91azPGAWg646a0PZTqTYxqziFVHJjQRx59W8VOT6yCzZdpn9c53cgYczr34X9lsAYrTmJND5ce0deRtHpUPVpnsmAu3Y+P1G2IxxjDBdijsPiX6H4urpOEGjCkL3tyoA7FCKXuCzuwVPghoPEySIAdKqBb2dNjTNT3b0ser8fOBo8StdqUlnKjBvnM4drMPIXaqk+jPnmhj3L1jsGxS8l4Nb8fPxdWlNH8jhfItDqRvq0IZZF4ihXW9v++nOsatFJiTluBOyoWGWaRyxurfupeS4nC2RcUFWZRgJCBV0peX33Wdmb3C/eX/Pa81A/aSK50kejU3XEtGaw6RtMEFAzR/vOQwalottaBtzJheHEdLEaFVy0OsGmQRHSt47ivN4G+aSb/wQ6LOeQWFBM9nhUCV4/G+9NdF2gSetnzQx5s2EOWeCXMrWpCqx8SW8cN4CJPZqRBbFBHuuqcj4V52IZlcSnNHH9FhsZFguKdfT3iwvMNAQ1B21zojXh+aW4/GvwRvSD2OBsy3B98G84jQzTeRpjKtRrhSSPlJpXazpxvS5ixmvxPer19dhzCtwXISmgcaJgd4q3obCcYub9ru4UNX8syB6jl2WCMIiTW8LpifOvi9Aa44YZLkvqsVajofqUbV61n9xzYIFQWkUrkzDLc5UWpI7sHx+veOLC7fP3HA5eyzwpE4QK8Ic/ENVRAJ1qdqPkHWERBVUEK3CWVZxxP7zMRbi1mJ+8FrcfUAJGGZo0o/K636lP1eUznAFnIISfYK4Ab3JjRxzcADVvh0A5z/H/1DGjVo01eAfWufp2A+YUDx0/bG20oErcHzZxO6kCnHq+m9BMjz8Q1uVfxN4r+dyfvaZ01jRs/79dwlj5fcABsxw/DPSU8y++WLkGb69U3oatjDPz7T5efp7j9O/zUCh8aNcycPCsOaWQun/JP26SCsxSmdR+595yGr0mh122JqOzI+zo0PF9CltlNq+KXh34Nfzsk43/7ytAWdsXAv1RTlZfzIbil6Vb+HLIrxCjdAYwcadR+QCBNjQEzBDWyFBKh6PiM/yjife20X5P2lcG0sR2tWr/ya9MDM0yRWL7kzORJR/z//1xP3ucMkrxFp7GtprzqjJheLr1wCMd30SFptBIpqDSp0J+Tyq43Augnbvpud3J1/AxN1jyi0fi0p+MrH/HFVSWrnhDAMejly/wgppcjVxPaRqiOI/2gpS6W6oWLBpl/6bxlAx9VJRN8CCQ2AB/bi2YhX479sRiNH2H7WtEJfNA2BlKng6KkATFdUbQDhPWUxLXwiiWz0s6SjvAOFjx6xco4XhoAL15HCKTLp27MfLLwxizc0hSrW4S6k/1hhRcOWe/dHZ+WKOSJkM5MNleOGOfimqc/FkslorKy3ypEOM7Vpx7dhzT7PkhD9OdBpNBbjC1mAjtHdVe+O0+ohH1MxNlqDLUVI913zVuDcityH41FJzOdLDqz3TgctQ+jEGOgue9HRZREvZcTwrIYMd16SlYd4I3Jihn8M9UE3mT4T2BayfNe4pIIB4f39mXBKbJufcgXifNIta5QgK58HcxVsMyBiQtUXWMShD/p7EJfu0+XB3Dr1KjmvnlYP4V9bmmJtAbgeWFqBzKq27G0UYp15wbuyO9WzuMftmwqrsCTmOSxP8lMQEayp5TZd20JStes2lmRw1uWkYguqH60Rmbr0qu2ibet8JmQbO52LFubUyS4EzwH3MkCF3UmsTpUrLJiPyT6NIEgTALMMqs7TqBUV7KIcsExceTyawUT46Anv58YBHUk+Wos/yicennjyVXHYMyI/EjbWy9LMbX77BPgpuglhLztxN9mR2icLwRwuxWas6xsG2UytIxDG8ImkN7yuSWJ4tygf7Omgno82h6eIiwtPrJYNYGdj96ReA1tMDlIRIE/MN4Z3IEXpbKh5ok4WjUdgKhCEz7K7r/Plaagxoj8wMQZ1pNcSR8mYmGbl+ppvkPnt6DMrJWP0LveNbttu/36zyldXwXRGOXPLZtHRSY/l9GcvBP7SJaO5DMwGiCYZsmmiMXb/dEDHfPlw0sZnAKaMXc0kMScGhACEPaYUaq0dk5eNrenCX3BPE3+nkX9ZN28MsAoCRQKBpaY/Kmmi8LtHptQcW395cEAZLR6vx73nb3l82cqJKpfeYeAWueFDJrv8kb+bcX8+QBIovPsPKSCg6/X6ixCN36q/lHIbjckKrEkJDpHodrm1HowuVDJEFuFKzVImiVVwqQk9kzjmTQqEyaHvWEk/qaCNYSjTnLkceZ0qNI9TX7qg+G7UZZU1DaI1eM2jBMJWiKjm6OcY6EJ3RSVWAxf6PeMbL0rIRU/RxKmgvF0wFRVHH0auferKST/4pq84jKPoUDP00fAL/AxpQ0Q1/kdr6OALkEzmzxDuoCRFl9g82B3eVvBgLlrJw9miNCccDTvmAEuoGjQEFXkV4crCcj20UnlyxTIcrNDynBRiktxe/vNFrI0aJa/HvuZKysXM7iV8U1J6vEayJ/H84NiszwykcAf1P0XiiZ16AP76FxgExdvvoA+NpMQ6uNcY18Uo4lEF4PlgKww2RBdiW9td3QPH7IE3wx0eVHB3jQyVq3tHdrL0A72nVfV976zXA2/30kUcCDBU3CJQAMDEoNaOLjzNjTSbtQpecuc7XyYgtrh3O/S/SHWltvmP84LIogid2EowTgZEz9YFPRfRgyVgBw3EsAb6rIVWv2Tmdqepxza4ZRORErIEjnp5mbifYFBGgUVy77TLsUv3aonbhNfTpd1EP5FHL430CyNVwXf0laR6qGihfiMK+yqKsA6JxtR85widUsZ5EtI/d6JFr1u5IUqvxFFdsvSvkISE8xxiI3jXa5epgMpgOCoCBsfMVe3V5BrCfDp1nChL6dhyMIMKttpsgLb+FiF+JVMYIB/N5LOutGIhdHyjqgkun7iqPeSwzcd0EorWO6FwTuNXlmWbbb3mlRKDkf/fUzebQ9FCPlC/qu+nerBzkETYqit5pxvJiMqtxxZGSr9c6yWj73n/RIZlIJzGr7tHWLiylOiZMdrzjKLAgF4rzSlUSsEjJK3BMX6ipBpONMWVotSYnk8xwAX+frGyYONhEebgC8sRoMK8EHea+XvNtj6kfqe8fwPl1fY3bDuLaq4dnLTCAMA04G/8RuBvmHi35VUJ7tXA3BJ/K9xGf3FS9DMJiuVO0LOGbRK1iFN5D7tXfZ4Jjjokkr1z0CHYww31q2K9NdKt4dC7PhvShRdpIwWXSFVZQscMLWdpVpyEJMZOxSlv3+Ka2c65DWGbcjuyTTPXl3BI3EJuXYvgwwyrYzXSuR0/RaMFhAeFdz4O1PR6jO3p9Ahqk9oOiOSi2n4MCLaiGsedRVc8WS3fBN/CyW603n9h+H7h67YvOMY4swHhDZmsSFlrqODqwoNZEaWdEWdNBVyiYD33vtpMjY5ylJNfpiGo7FEqugIQ2LVVJHxs1b0JdZoQw8mDvbH3LBP4sBc3/d8s9cWDEdQ6rZJh+ztOPqahWWzWdw1lqoPXPz6UndvfQGmurcmshFLFhcpPIWREXQ9woGVaj7qzN7F8UTYGOh2Ne/XexrGLJmMgcq5t2KCrqFiiUZe3JKtt7/fVDp5LesRf1OQRKjltIaCfSqW+gJeIuNUsKC7CxPw87r6lk+Y+7E3jVB5xFtllQJMo/xvvPBNaD5kqVVFjBZdwo2m6s5p3gi02CtyB3J3v4vLY2M6nhEAGk/n51o9nWPc/DFw+SVHeJ9ZpXZTplaJJJ+5lJx26p+3zTw3xyGV66adoHlrZQh0Ct4TsK8HSPddGdNfsH0VvBBm+FphXWjxnIX2Nen/N/TQvUtmN5J0PI1R4D3TTUMwE5UvPOtrDX1XeOrgDRYMMX7j/ISPJvZJLJrBp+c9KlmREcaVs6vz3FqRq/t+ntBB0Iwz+n+gIHJlQy+PYvuTixpB3h4bu5lruv+wP0FbYxfEpfB7g1RR0iQrbBZykplH1GQwZwGhY9ZgecNwQ/nVjSc+sNXBqzUCxW+5GV0tdjGlbsrtaZXqpzpwCZrlxKUOcSTw00y5zN2HTpkuGgp0EyuZXYdhYVulGSpBfbcLc64P/lVQ/6eGIruOsjOuEgLT2U/qJiahOTk4uNp8tjGM3E5bDouUa0yoiloqaQUwA9RziuoX3PBPCyhPXKYBGGV+YpJ4/Vjg1OQadT7Fc5iRB8RkUmhZWzrEuyRC/Zj4pPhVttS/eEfSG/6NdRLmerXx8tIzgz4ess4ALO8NoGC3eRnVv64Tbe8JRs21hFZEP5VedlS5XDE0jciAf6Zzv0AVsC+sVlzD9fdtFcFAn86NdsXJWu+r4HsNN4Arr3ggZxC/3sqwqYI7lvqGjEs6gpXewygIFeKbM4FdMHTslYAsFpegyy9ZsJfqkRNX5OZHtLI8HiCJ5VShv2xubf+0F3QkXjHtKaPoIKwDfPhpK96IQWwgvwqNHRn06N7Q/CUWajEzYGqaAuTDo6Cb2PR6onJ67USiMJHvExjEsAxDpYI+RRZjRha2qqd6Kv+knRfxa4tUz2HhwrMBzqs2suWqHrf1Zz6gIpfJ5WDAqDAg1zQNo3TJrXmYWoyDUMOV3QMCMJ6QrvueVGfMCPhvXuqfQ13RY00DUk23O3kV+FUeoS8mFjYVlJMj1jMCYavcO9uniniucQNX3b30FH7LSR6jOn+cVoX/14BCRckLeSfmENowXRJW0ouflZ8OIiAAAA=",
+        intro: "Max's stepbrother, Billy, becomes possessed by the Mind Flayer in Season 3, turning into a dangerous and violent antagonist."
+    },
+    {
+        name: "Dr. Martin Brenner",
+        status: "Unknown",
+        img: "data:image/webp;base64,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",
+        intro: "The scientist behind Hawkins Lab's experiments, Brenner is responsible for Eleven's suffering and the opening of the gate to the Upside Down."
+    }
+];
+
+// ======= Render Villains =======
+const villainsGrid = document.querySelector('.villains-grid');
+function renderVillains() {
+    villainsGrid.innerHTML = '';
+    villainsData.forEach(vil => {
+        villainsGrid.innerHTML += `
+        <div class="character-card">
+            <img src="${vil.img}" alt="${vil.name}" class="character-image">
+            <div class="character-info">
+                <span class="character-status status-${vil.status.toLowerCase()}">${vil.status}</span>
+                <h3 class="character-name">${vil.name}</h3>
+                <p class="character-description">${vil.intro}</p>
+            </div>
+        </div>
+        `;
+    });
+}
+renderVillains();
+
+// ======= The rest of your interactivity (music, nav, etc) remains unchanged below =======
+
+// Mobile Menu
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const mainNav = document.getElementById('main-nav');
+mobileMenuBtn.addEventListener('click', () => {
+    mainNav.classList.toggle('active');
+    const expanded = mainNav.classList.contains('active');
+    mobileMenuBtn.setAttribute('aria-expanded', expanded);
+    mobileMenuBtn.innerHTML = expanded ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+});
+// Header Scroll Effect
+const header = document.getElementById('main-header');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 100) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+});
+// Easter Egg - Demogorgon (Ctrl+D)
+let eggTriggered = false;
+const demogorgonEgg = document.querySelector('.demogorgon-egg');
+document.addEventListener('keydown', (e) => {
+    if(e.key === 'd' && e.ctrlKey && !eggTriggered) {
+        demogorgonEgg.style.display = 'block';
+        eggTriggered = true;
+        setTimeout(() => {
+            demogorgonEgg.style.display = 'none';
+            eggTriggered = false;
+        }, 2000);
+    }
+});
+// Smooth Scrolling for Anchor Links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if(targetId === '#' || !document.querySelector(targetId)) return;
+        e.preventDefault();
+        const targetElement = document.querySelector(targetId);
+        window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+        });
+        if(mainNav.classList.contains('active')) {
+            mainNav.classList.remove('active');
+            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            mobileMenuBtn.setAttribute('aria-expanded', false);
+        }
+    });
+});
+// Music Button
+const playBtn = document.getElementById('play-music-btn');
+const audio = document.getElementById('bg-music');
+let musicStarted = false;
+playBtn.addEventListener('click', function() {
+    audio.volume = 0.5;
+    audio.play();
+    this.setAttribute('aria-pressed', 'true');
+    this.querySelector('span').textContent = 'Playing...';
+    this.querySelector('i').classList.remove('fa-music');
+    this.querySelector('i').classList.add('fa-headphones');
+    setTimeout(() => {
+        playBtn.style.opacity = '0';
+        setTimeout(() => playBtn.style.display = 'none', 400);
+    }, 1200);
+    musicStarted = true;
+});
+// Optional: Pause music on page hide
+document.addEventListener('visibilitychange', function() {
+    if(document.hidden && musicStarted) audio.pause();
+    else if(musicStarted) audio.play();
+});
+    </script>
+</body>
+</html>
