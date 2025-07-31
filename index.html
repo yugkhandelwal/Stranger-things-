@@ -2,11 +2,63 @@
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Stranger Things Universe | The Ultimate Fan Experience</title>
     <meta name="description" content="The complete guide to Stranger Things - characters, episodes, cast, lore, and interactive fan experiences">
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://images.unsplash.com">
+    
+    <!-- Critical CSS will be inlined above -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700&family=Press+Start+2P&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;700&family=Press+Start+2P&display=swap"></noscript>
+    
+    <!-- SEO & Social Media Meta Tags -->
+    <meta name="keywords" content="Stranger Things, Netflix, Hawkins, Upside Down, Eleven, Demogorgon, 80s, sci-fi, horror, fan site">
+    <meta name="author" content="Stranger Things Fan Community">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://strangerthingsuniverse.com/">
+    <meta property="og:title" content="Stranger Things Universe | The Ultimate Fan Experience">
+    <meta property="og:description" content="Explore the complete world of Stranger Things - characters, episodes, secrets, and the Upside Down">
+    <meta property="og:image" content="https://4kwallpapers.com/images/walls/thumbs_3t/18818.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://strangerthingsuniverse.com/">
+    <meta property="twitter:title" content="Stranger Things Universe | The Ultimate Fan Experience">
+    <meta property="twitter:description" content="Explore the complete world of Stranger Things - characters, episodes, secrets, and the Upside Down">
+    <meta property="twitter:image" content="https://4kwallpapers.com/images/walls/thumbs_3t/18818.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁️</text></svg>">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="data:application/json,{
+        'name': 'Stranger Things Universe',
+        'short_name': 'ST Universe',
+        'description': 'The Ultimate Stranger Things Fan Experience',
+        'start_url': '/',
+        'display': 'standalone',
+        'background_color': '#0F0F1A',
+        'theme_color': '#E72525',
+        'icons': [
+            {
+                'src': 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'%23E72525\'/><text x=\'50\' y=\'60\' text-anchor=\'middle\' fill=\'white\' font-size=\'30\' font-family=\'monospace\'>ST</text></svg>',
+                'sizes': '192x192',
+                'type': 'image/svg+xml'
+            }
+        ]
+    }">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23E72525'/><text x='50' y='60' text-anchor='middle' fill='white' font-size='30' font-family='monospace'>ST</text></svg>">
+    
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -24,6 +76,12 @@
             --transition: 0.3s cubic-bezier(.25,.8,.25,1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* Better iOS scrolling */
+        }
+        
         body {
             background-color: var(--secondary);
             color: var(--text);
@@ -31,8 +89,77 @@
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
+            -webkit-text-size-adjust: 100%; /* Prevent text scaling on iOS */
         }
-        /* CRT Effect */
+        /* ===== Loading Screen ===== */
+        .loading-screen {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--secondary);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loading-logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .loading-bar {
+            width: 300px;
+            height: 4px;
+            background: var(--secondary-light);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0%;
+            animation: loading 3s ease-out forwards;
+        }
+        
+        .loading-text {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; text-shadow: 0 0 20px var(--primary); }
+        }
+        
+        @keyframes loading {
+            to { width: 100%; }
+        }
+
+        /* ===== Scroll Progress Bar ===== */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            z-index: 1001;
+            transition: width 0.1s ease;
+        }
         body.crt-effect::before {
             content: "";
             pointer-events: none;
@@ -127,7 +254,7 @@
         /* Hero Section */
         .hero {
             height: 100vh;
-            min-height: 700px;
+            min-height: 600px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -136,6 +263,7 @@
             overflow: hidden;
             background: url('https://4kwallpapers.com/images/walls/thumbs_3t/18568.jpg') no-repeat center center;
             background-size: cover;
+            padding: 0 1rem;
         }
         .hero::before {
             content: "";
@@ -148,9 +276,10 @@
             position: relative;
             z-index: 2;
             max-width: 800px;
+            width: 100%;
             margin: 0 auto;
-            padding: 2rem;
-            background: rgba(24,24,40,0.7);
+            padding: clamp(1rem, 5vw, 2rem);
+            background: rgba(24,24,40,0.8);
             border-radius: var(--border-radius);
             box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37);
             animation: fadeInDown 1.2s;
@@ -162,7 +291,7 @@
         .glitch {
             position: relative;
             color: white;
-            font-size: 4.5rem;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
             font-family: 'Bebas Neue', sans-serif;
             text-transform: uppercase;
             letter-spacing: 5px;
@@ -218,11 +347,12 @@
             100% { clip-path: polygon(0 10%, 100% 10%, 100% 60%, 0 60%); }
         }
         .hero-subtitle {
-            font-size: 1.5rem;
+            font-size: clamp(1.1rem, 4vw, 1.5rem);
             margin-bottom: 2rem;
             color: var(--accent);
             text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
             animation: fadeInUp 1.5s;
+            line-height: 1.6;
         }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(40px);}
@@ -249,6 +379,10 @@
             transition: all var(--transition);
             position: relative;
             overflow: hidden;
+            min-height: 44px; /* Touch-friendly minimum size */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         .btn:focus { outline: 2px solid var(--accent); }
         .btn-primary {
@@ -281,12 +415,12 @@
         }
 
         h1 {
-            font-size: 3.5rem;
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
             margin-bottom: 1rem;
         }
 
         h2 {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 5vw, 2.5rem);
             color: var(--accent);
             margin-bottom: 1.5rem;
             position: relative;
@@ -303,9 +437,18 @@
             background: linear-gradient(90deg, var(--primary), var(--accent));
         }
 
-        p {
-            margin-bottom: 1rem;
-            color: var(--text-dim);
+        /* ===== Image optimizations ===== */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .episode-image,
+        .character-image,
+        .about-image img {
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: optimize-contrast;
         }
 
         /* ===== Layout ===== */
@@ -361,6 +504,76 @@
             transform: scale(1.05);
         }
 
+        .image-caption {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .show-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--secondary-light);
+            border-radius: 8px;
+            border: 1px solid rgba(231, 37, 37, 0.1);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat h4 {
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat span {
+            color: var(--text);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .awards-section {
+            background: var(--secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        .awards-section h4 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .awards-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .awards-section li {
+            padding: 0.3rem 0;
+            color: var(--text-dim);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .awards-section li::before {
+            content: "🏅";
+            position: absolute;
+            left: 0;
+            top: 0.3rem;
+        }
+
         /* ===== Seasons Section ===== */
         .seasons {
             background-color: var(--secondary);
@@ -400,8 +613,8 @@
 
         .episodes-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
 
         .episode-card {
@@ -509,8 +722,8 @@
 
         .characters-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
         }
         .villains {
     background-color: var(--secondary);
@@ -529,18 +742,19 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             border: 1px solid rgba(0, 200, 255, 0.1);
         }
 
         .character-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
 
         .character-image {
             width: 100%;
-            height: 300px;
+            height: 250px;
             object-fit: cover;
             display: block;
         }
@@ -570,6 +784,19 @@
             line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
+        }
+
+        .character-powers {
+            background: var(--secondary);
+            padding: 0.8rem;
+            border-radius: 6px;
+            margin-top: 1rem;
+            border-left: 3px solid var(--accent);
+            font-size: 0.85rem;
+        }
+
+        .character-powers strong {
+            color: var(--accent);
         }
 
         .character-status {
@@ -715,13 +942,165 @@
         }
 
         /* ===== Responsive Styles ===== */
+        @media (max-width: 1200px) {
+            .container {
+                width: 95%;
+                padding: 0 10px;
+            }
+        }
+
         @media (max-width: 992px) {
             .about-content {
                 grid-template-columns: 1fr;
+                gap: 2rem;
             }
             
             .about-image {
                 order: -1;
+            }
+            
+            .episodes-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .season-tabs {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+                gap: 0.75rem;
+            }
+            
+            .season-tab {
+                flex-shrink: 0;
+                padding: 0.75rem 1.25rem;
+            }
+        }
+
+        /* ===== Performance Indicator ===== */
+        .performance-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            animation: slideInLeft 0.5s ease-out;
+            transition: opacity 0.5s ease;
+        }
+
+        .perf-icon {
+            font-size: 1.2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* ===== Image Lazy Loading ===== */
+        img.lazy {
+            filter: blur(5px);
+            transition: filter 0.3s;
+        }
+
+        img {
+            transition: opacity 0.3s ease;
+        }
+
+        /* ===== Accessibility ===== */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary-red);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 10000;
+            transition: top 0.3s;
+        }
+
+        .skip-link:focus {
+            top: 6px;
+        }
+
+        /* Focus indicators */
+        *:focus {
+            outline: 2px solid var(--primary-red);
+            outline-offset: 2px;
+        }
+
+        /* ===== Cookie Banner ===== */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 1rem;
+            z-index: 10000;
+            transform: translateY(100%);
+            animation: slideUp 0.5s ease-out forwards;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+        }
+
+        .cookie-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .cookie-text h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .cookie-text p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .cookie-buttons .btn {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
             }
         }
 
@@ -735,6 +1114,7 @@
                 background-color: var(--secondary-light);
                 transition: left 0.3s ease;
                 padding: 2rem;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             }
             
             .main-nav.active {
@@ -749,20 +1129,28 @@
                 margin: 1rem 0;
             }
             
+            .main-nav a {
+                font-size: 1.2rem;
+                padding: 1rem 0;
+                display: block;
+            }
+            
             .mobile-menu-btn {
                 display: block;
             }
             
             h1 {
-                font-size: 2.5rem;
+                font-size: clamp(2rem, 6vw, 2.5rem);
             }
             
-            .glitch {
-                font-size: 3rem;
+            h2 {
+                font-size: clamp(1.8rem, 5vw, 2.5rem);
+                margin-bottom: 1.5rem;
             }
             
             .hero-subtitle {
-                font-size: 1.2rem;
+                font-size: clamp(1rem, 4vw, 1.2rem);
+                margin-bottom: 2rem;
             }
             
             .hero-btns {
@@ -772,16 +1160,144 @@
             
             .btn {
                 width: 100%;
+                padding: 1rem 2rem;
+                font-size: 1rem;
+                min-height: 48px; /* Touch-friendly size */
+            }
+            
+            section {
+                padding: 3rem 0;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .about-content {
+                gap: 1.5rem;
+            }
+            
+            .about-text {
+                text-align: left;
+            }
+            
+            .about-text p {
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+            
+            .episode-card {
+                margin-bottom: 1rem;
+            }
+            
+            .episode-card-body {
+                padding: 1.25rem;
+            }
+            
+            .episode-title {
+                font-size: 1.2rem;
+                line-height: 1.4;
             }
         }
 
         @media (max-width: 576px) {
+            .header-container {
+                padding: 0.75rem 0;
+            }
+            
+            .logo {
+                font-size: 1.2rem;
+                letter-spacing: 1px;
+            }
+            
+            .hero {
+                min-height: 500px;
+                padding: 0 0.5rem;
+            }
+            
+            .hero-content {
+                padding: 1.5rem 1rem;
+            }
+            
+            .glitch {
+                letter-spacing: 2px;
+                margin-bottom: 0.75rem;
+            }
+            
             .episodes-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
             
             .characters-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .about-content {
+                gap: 1rem;
+            }
+            
+            .season-tabs {
+                gap: 0.5rem;
+            }
+            
+            .season-tab {
+                padding: 0.6rem 1rem;
+                font-size: 0.75rem;
+            }
+            
+            .episode-image {
+                height: 180px;
+            }
+            
+            .episode-card-body {
+                padding: 1rem;
+            }
+            
+            .episode-description {
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+            
+            section {
+                padding: 2rem 0;
+            }
+            
+            h2 {
+                text-align: center;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .hero-content {
+                padding: 1rem 0.75rem;
+            }
+            
+            .btn {
+                padding: 0.875rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .container {
+                padding: 0 0.75rem;
+            }
+            
+            .episode-card-body {
+                padding: 0.75rem;
+            }
+            
+            /* Cookie banner mobile */
+            .cookie-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .cookie-buttons {
+                width: 100%;
+                justify-content: center;
             }
         }
 
@@ -829,12 +1345,696 @@
             color: #fff;
             animation: spin 1.2s linear infinite;
         }
-        @keyframes spin {
-            100% { transform: rotate(360deg);}
+        /* ===== Back to Top Button ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(231, 37, 37, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+            z-index: 999;
         }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .back-to-top:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 200, 255, 0.4);
+        }
+        
+        /* ===== Search Functionality ===== */
+        .search-container {
+            position: relative;
+            display: none;
+        }
+        
+        .search-input {
+            background: var(--secondary-light);
+            border: 2px solid var(--accent);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            color: var(--text);
+            font-size: 0.9rem;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 200, 255, 0.2);
+            width: 250px;
+        }
+        
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--secondary-light);
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .search-result-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .search-result-item:hover {
+            background: var(--secondary);
+        }
+        
+        /* ===== Interactive Timeline ===== */
+        .timeline-section {
+            background: var(--secondary-light);
+            padding: 4rem 0;
+            position: relative;
+        }
+        
+        .timeline-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin: 2rem 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+        
+        .timeline-item.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 0;
+            margin-right: 50%;
+            text-align: right;
+            padding-right: 2rem;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 50%;
+            margin-right: 0;
+            text-align: left;
+            padding-left: 2rem;
+        }
+        
+        .timeline-marker {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border: 4px solid var(--secondary-light);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item:hover .timeline-marker {
+            background: var(--accent);
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+        
+        .timeline-content {
+            background: var(--secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 1px solid rgba(231, 37, 37, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+        
+        .timeline-year {
+            color: var(--accent);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-title {
+            color: var(--text);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-description {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                margin-left: 0;
+                margin-right: 0;
+                text-align: left;
+                padding-left: 3rem;
+                padding-right: 1rem;
+            }
+            
+            .timeline-marker {
+                left: 20px;
+            }
+        }
+
+        /* ===== Theme Toggle ===== */
+        .theme-toggle {
+            position: fixed;
+            top: 50%;
+            right: 24px;
+            width: 50px;
+            height: 50px;
+            background: var(--secondary-light);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            color: var(--accent);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 998;
+            transform: translateY(-50%);
+        }
+        
+        .theme-toggle:hover {
+            background: var(--accent);
+            color: var(--secondary);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        /* Light Theme */
+        [data-theme="light"] {
+            --primary: #E72525;
+            --primary-dark: #9e0a0a;
+            --secondary: #f8f9fa;
+            --secondary-light: #ffffff;
+            --accent: #007bff;
+            --accent-dark: #0056b3;
+            --text: #212529;
+            --text-dim: #6c757d;
+            --card-bg: #ffffff;
+        }
+        
+        /* Upside Down Theme */
+        [data-theme="upside-down"] {
+            --primary: #8B0000;
+            --primary-dark: #4B0000;
+            --secondary: #1a0000;
+            --secondary-light: #2d0000;
+            --accent: #FF6B6B;
+            --accent-dark: #cc5555;
+            --text: #FFB3B3;
+            --text-dim: #996666;
+            --card-bg: #2d0000;
+        }
+        
+        [data-theme="upside-down"] body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><filter id="noise"><feTurbulence baseFrequency="0.9" /></filter></defs><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.05"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* ===== News Section ===== */
+        .news {
+            background: var(--secondary);
+            padding: 4rem 0;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .news-card {
+            background: var(--secondary-light);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(231, 37, 37, 0.1);
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .news-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .news-card:hover .news-image img {
+            transform: scale(1.05);
+        }
+        
+        .news-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .news-content {
+            padding: 1.5rem;
+        }
+        
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+        }
+        
+        .news-date {
+            color: var(--text-dim);
+        }
+        
+        .news-category {
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .news-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+            line-height: 1.4;
+        }
+        
+        .news-excerpt {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .news-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .news-link:hover {
+            color: var(--accent);
+        }
+        
+        .news-link i {
+            transition: transform 0.3s ease;
+        }
+        
+        .news-link:hover i {
+            transform: translateX(3px);
+        }
+
+        /* ===== Locations Section ===== */
+        .locations {
+            background: var(--secondary-light);
+            padding: 4rem 0;
+        }
+
+        .section-intro {
+            text-align: center;
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .location-card {
+            background: var(--secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(231, 37, 37, 0.1);
+        }
+
+        .location-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .location-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .location-info {
+            padding: 1.5rem;
+        }
+
+        .location-info h3 {
+            color: var(--text);
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
+        }
+
+        .location-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .location-status.safe {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 1px solid #2ecc71;
+        }
+
+        .location-status.danger {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+        }
+
+        .location-status.destroyed {
+            background: rgba(155, 89, 182, 0.2);
+            color: #9b59b6;
+            border: 1px solid #9b59b6;
+        }
+
+        .location-status.unstable {
+            background: rgba(241, 196, 15, 0.2);
+            color: #f1c40f;
+            border: 1px solid #f1c40f;
+        }
+
+        .location-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .location-details span {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        /* ===== Trivia Section ===== */
+        .trivia {
+            background: var(--secondary);
+            padding: 4rem 0;
+        }
+
+        .trivia-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .trivia-card {
+            background: var(--secondary-light);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+        }
+
+        .trivia-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .trivia-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .trivia-card h3 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .trivia-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .trivia-card li {
+            padding: 0.5rem 0;
+            color: var(--text-dim);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .trivia-card li:last-child {
+            border-bottom: none;
+        }
+
+        .trivia-card li::before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+        }
+
+        /* ===== Theories Section ===== */
+        .theories {
+            background: var(--primary-dark);
+            padding: 4rem 0;
+            position: relative;
+        }
+
+        .theories::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 25%, rgba(231, 37, 37, 0.05) 25%, rgba(231, 37, 37, 0.05) 50%, transparent 50%, transparent 75%, rgba(231, 37, 37, 0.05) 75%);
+            background-size: 60px 60px;
+            opacity: 0.3;
+        }
+
+        .theories .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .theories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .theory-card {
+            background: var(--secondary-light);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(231, 37, 37, 0.2);
+        }
+
+        .theory-card:hover {
+            transform: scale(1.02);
+        }
+
+        .theory-header {
+            padding: 1.5rem;
+            background: var(--secondary);
+            border-bottom: 1px solid rgba(231, 37, 37, 0.1);
+        }
+
+        .theory-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .theory-status.confirmed {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 1px solid #2ecc71;
+        }
+
+        .theory-status.plausible {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+            border: 1px solid #3498db;
+        }
+
+        .theory-status.mystery {
+            background: rgba(155, 89, 182, 0.2);
+            color: #9b59b6;
+            border: 1px solid #9b59b6;
+        }
+
+        .theory-status.debunked {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+        }
+
+        .theory-status.developing {
+            background: rgba(230, 126, 34, 0.2);
+            color: #e67e22;
+            border: 1px solid #e67e22;
+        }
+
+        .theory-status.wild {
+            background: rgba(241, 196, 15, 0.2);
+            color: #f1c40f;
+            border: 1px solid #f1c40f;
+        }
+
+        .theory-header h3 {
+            color: var(--text);
+            font-size: 1.3rem;
+            margin: 0;
+        }
+
+        .theory-content {
+            padding: 1.5rem;
+        }
+
+        .theory-content p {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .theory-content strong {
+            color: var(--accent);
+        }
+
     </style>
 </head>
 <body class="crt-effect">
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-logo">STRANGER THINGS</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+        <div class="loading-text">Entering the Upside Down...</div>
+    </div>
+    
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scroll-progress"></div>
+    
     <!-- Demogorgon Easter Egg (Hidden by default) -->
     <div class="demogorgon-egg" aria-hidden="true"></div>
     <!-- Header -->
@@ -851,15 +2051,30 @@
                     <li><a href="#about">About</a></li>
                     <li><a href="#seasons">Seasons</a></li>
                     <li><a href="#characters">Characters</a></li>
-                    <li><a href="#upside-down">Upside Down</a></li>
+                    <li><a href="#timeline">Timeline</a></li>
                     <li><a href="#news">News</a></li>
                     <li><a href="#villains">Villains</a></li>
+                    <li><a href="#upside-down">Upside Down</a></li>
+                    <li><a href="#locations">Locations</a></li>
+                    <li><a href="#trivia">Trivia</a></li>
+                    <li><a href="#theories">Fan Theories</a></li>
                 </ul>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search characters, episodes..." id="search-input">
+                    <div class="search-results" id="search-results"></div>
+                </div>
+            </nav>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search characters, episodes..." id="search-input">
+                    <div class="search-results" id="search-results"></div>
+                </div>
             </nav>
         </div>
     </header>
-    <!-- Hero Section -->
-    <section class="hero" aria-label="Stranger Things Hero Section">
+
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section class="hero" aria-label="Stranger Things Hero Section">
         <div class="hero-content">
             <h1 class="glitch" data-text="STRANGER THINGS">STRANGER THINGS</h1>
             <p class="hero-subtitle">The Complete Guide to Hawkins, the Upside Down, and Beyond</p>
@@ -875,13 +2090,50 @@
             <h2>About The Show</h2>
             <div class="about-content">
                 <div class="about-text">
-                    <p>Stranger Things is an American science fiction horror drama television series created by the Duffer Brothers. Set in the 1980s in the fictional town of Hawkins, Indiana, the show follows a group of kids who encounter supernatural forces and secret government exploits.</p>
-                    <p>When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl. The series is a tribute to 80s pop culture, drawing inspiration from the works of Steven Spielberg, John Carpenter, and Stephen King.</p>
-                    <p>Since its debut in 2016, Stranger Things has become a global phenomenon, praised for its character development, tone, acting, soundtrack, and homages to 1980s films and television.</p>
-                    <a href="#" class="btn btn-primary" style="margin-top: 1.5rem;">Learn More</a>
+                    <p>Stranger Things is an American science fiction horror drama television series created by the visionary Duffer Brothers (Matt and Ross Duffer). Set in the nostalgic 1980s in the fictional town of Hawkins, Indiana, the show masterfully follows a group of kids who encounter supernatural forces and secret government exploits that will change their lives forever.</p>
+                    
+                    <p>When young Will Byers mysteriously vanishes on November 6, 1983, the small town of Hawkins uncovers a terrifying mystery involving secret experiments conducted by Hawkins National Laboratory, supernatural forces from an alternate dimension called "The Upside Down," and one extraordinary little girl with psychokinetic abilities known only as "Eleven."</p>
+                    
+                    <p>The series is a brilliant tribute to 1980s pop culture, drawing inspiration from the legendary works of Steven Spielberg, John Carpenter, Stephen King, and George Lucas. From the iconic synthesizer soundtrack by Kyle Dixon and Michael Stein to the authentic period details, every element transports viewers back to the golden age of sci-fi and horror.</p>
+                    
+                    <div class="show-stats">
+                        <div class="stat">
+                            <h4>Seasons</h4>
+                            <span>5 (Complete Series)</span>
+                        </div>
+                        <div class="stat">
+                            <h4>Episodes</h4>
+                            <span>42 Total Episodes</span>
+                        </div>
+                        <div class="stat">
+                            <h4>Runtime</h4>
+                            <span>45-77 minutes</span>
+                        </div>
+                        <div class="stat">
+                            <h4>Genre</h4>
+                            <span>Sci-Fi Horror Drama</span>
+                        </div>
+                    </div>
+                    
+                    <p>Since its groundbreaking debut on July 15, 2016, Stranger Things has become a global cultural phenomenon, earning critical acclaim for its outstanding character development, masterful tone, exceptional acting performances, haunting soundtrack, and loving homages to 1980s films and television. The show launched the careers of its young cast and became Netflix's most-watched series.</p>
+                    
+                    <div class="awards-section">
+                        <h4>🏆 Awards & Recognition</h4>
+                        <ul>
+                            <li>Screen Actors Guild Award for Outstanding Performance</li>
+                            <li>Emmy Nominations (39 total nominations)</li>
+                            <li>Golden Globe Nominations</li>
+                            <li>Critics' Choice Television Awards</li>
+                            <li>MTV Movie & TV Awards</li>
+                            <li>People's Choice Awards</li>
+                        </ul>
+                    </div>
+                    
+                    <a href="#seasons" class="btn btn-primary" style="margin-top: 1.5rem;">Explore All Seasons</a>
                 </div>
                 <div class="about-image">
-                    <img src="https://4kwallpapers.com/images/walls/thumbs_3t/18818.jpg" alt="Stranger Things Cast">
+                    <img src="https://4kwallpapers.com/images/walls/thumbs_3t/18818.jpg" alt="Stranger Things Cast" loading="lazy">
+                    <div class="image-caption">The incredible cast that brought Hawkins to life</div>
                 </div>
             </div>
         </div>
@@ -904,7 +2156,7 @@
                 <div class="episode-card">
                     <div class="episode-card-header">
                         <div class="episode-number">1</div>
-                        <img src="https://images.unsplash.com/photo-1585620385456-4759f9b5c7d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Episode 1" class="episode-image">
+                        <img src="https://images.unsplash.com/photo-1585620385456-4759f9b5c7d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Episode 1" class="episode-image" loading="lazy">
                     </div>
                     <div class="episode-card-body">
                         <h3 class="episode-title">Chapter One: The Vanishing of Will Byers</h3>
@@ -921,7 +2173,7 @@
                 <div class="episode-card">
                     <div class="episode-card-header">
                         <div class="episode-number">2</div>
-                        <img src="https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Episode 2" class="episode-image">
+                        <img src="https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Episode 2" class="episode-image" loading="lazy">
                     </div>
                     <div class="episode-card-body">
                         <h3 class="episode-title">Chapter Two: The Weirdo on Maple Street</h3>
@@ -938,7 +2190,7 @@
                 <div class="episode-card">
                     <div class="episode-card-header">
                         <div class="episode-number">3</div>
-                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=2048&q=80" alt="Episode 3" class="episode-image">
+                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=2048&q=80" alt="Episode 3" class="episode-image" loading="lazy">
                     </div>
                     <div class="episode-card-body">
                         <h3 class="episode-title">Chapter Three: Holly, Jolly</h3>
@@ -962,54 +2214,565 @@
             <div class="characters-grid">
                 <!-- Eleven -->
                 <div class="character-card">
-                    <img src="https://th.bing.com/th/id/OIP.Z9zx-ma3ueqk_61IA5MwdgHaHa?w=181&h=182&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3" height="200px" alt="Eleven" class="character-image">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=350&fit=crop" alt="Eleven" class="character-image" loading="lazy">
                     <div class="character-info">
                         <span class="character-status status-alive">Alive</span>
-                        <h3 class="character-name">Eleven</h3>
+                        <h3 class="character-name">Eleven (Jane Ives)</h3>
                         <span class="character-actor">Millie Bobby Brown</span>
-                        <p class="character-description">A young girl with psychokinetic abilities who escapes from Hawkins National Laboratory. She befriends Mike and his friends and helps them search for Will.</p>
-                        <a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">View Profile</a>
+                        <p class="character-description">A young girl with psychokinetic abilities who escaped from Hawkins National Laboratory. Known as Subject 011, she has the power to move objects with her mind and access other dimensions. Adopted by Jim Hopper and later reunited with her biological mother.</p>
+                        <div class="character-powers">
+                            <strong>Powers:</strong> Telekinesis, Remote Viewing, Dimensional Travel
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Mike Wheeler -->
                 <div class="character-card">
-                    <img src="https://th.bing.com/th/id/OIP.UsQ_SdywD0FAxg8IAfFIvgHaHa?w=180&h=180&c=7&r=0&o=5&dpr=1.1&pid=1.7" alt="Mike Wheeler" class="character-image">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=350&fit=crop" alt="Mike Wheeler" class="character-image" loading="lazy">
                     <div class="character-info">
                         <span class="character-status status-alive">Alive</span>
                         <h3 class="character-name">Mike Wheeler</h3>
                         <span class="character-actor">Finn Wolfhard</span>
-                        <p class="character-description">The leader of the Party who becomes Eleven's closest friend and love interest. He is determined to find his missing best friend, Will.</p>
-                        <a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">View Profile</a>
+                        <p class="character-description">The heart and leader of the group, Mike is Will's best friend and Eleven's boyfriend. He's fiercely loyal, intelligent, and always ready to protect his friends. The strategist of the Party who often comes up with plans to fight supernatural threats.</p>
+                        <div class="character-powers">
+                            <strong>D&D Class:</strong> Paladin (The Heart)
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Dustin Henderson -->
                 <div class="character-card">
-                    <img src="https://th.bing.com/th/id/OIP.5P2Vp4FHDSgrEJIJbuP8YQHaQC?w=114&h=180&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3" alt="Dustin Henderson" class="character-image">
+                    <img src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?w=300&h=350&fit=crop" alt="Dustin Henderson" class="character-image" loading="lazy">
                     <div class="character-info">
                         <span class="character-status status-alive">Alive</span>
                         <h3 class="character-name">Dustin Henderson</h3>
                         <span class="character-actor">Gaten Matarazzo</span>
-                        <p class="character-description">A member of the Party known for his humor and scientific curiosity. He has cleidocranial dysplasia, which affects his teeth growth.</p>
-                        <a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">View Profile</a>
+                        <p class="character-description">The comic relief and tech genius of the group with cleidocranial dysplasia. Dustin is curious, resourceful, and has an infectious personality. He discovers and initially cares for a baby Demogorgon he names D'Artagnan (Dart).</p>
+                        <div class="character-powers">
+                            <strong>D&D Class:</strong> Bard (The Comic Relief)
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Lucas Sinclair -->
                 <div class="character-card">
-                    <img src="https://th.bing.com/th/id/OIP.sWtzR-1p22wdgNFIKYTzuwHaJ3?w=133&h=180&c=7&r=0&o=7&dpr=1.1&pid=1.7&rm=3" alt="Lucas Sinclair" class="character-image">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=350&fit=crop" alt="Lucas Sinclair" class="character-image" loading="lazy">
                     <div class="character-info">
                         <span class="character-status status-alive">Alive</span>
                         <h3 class="character-name">Lucas Sinclair</h3>
                         <span class="character-actor">Caleb McLaughlin</span>
-                        <p class="character-description">A pragmatic member of the Party who is initially suspicious of Eleven but later becomes her friend. He's skilled with a wrist rocket.</p>
-                        <a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">View Profile</a>
+                        <p class="character-description">The skeptical and practical member of the group who always questions everything. Lucas is an excellent shot with his wrist rocket slingshot and later becomes Max's boyfriend. He's protective of his friends and sister Erica.</p>
+                        <div class="character-powers">
+                            <strong>D&D Class:</strong> Ranger (The Skeptic)
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Will Byers -->
+                <div class="character-card">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=350&fit=crop" alt="Will Byers" class="character-image" loading="lazy">
+                    <div class="character-info">
+                        <span class="character-status status-alive">Alive</span>
+                        <h3 class="character-name">Will Byers</h3>
+                        <span class="character-actor">Noah Schnapp</span>
+                        <p class="character-description">The sensitive artist of the group whose disappearance in Season 1 kickstarted the entire series. After being trapped in the Upside Down, Will developed a connection to the dimension and can sense when it's near. He's also struggling with his sexuality.</p>
+                        <div class="character-powers">
+                            <strong>D&D Class:</strong> Cleric/Wizard (The Wise)
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Max Mayfield -->
+                <div class="character-card">
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616c6b7d0a2?w=300&h=350&fit=crop" alt="Max Mayfield" class="character-image" loading="lazy">
+                    <div class="character-info">
+                        <span class="character-status status-unknown">Critical</span>
+                        <h3 class="character-name">Max Mayfield</h3>
+                        <span class="character-actor">Sadie Sink</span>
+                        <p class="character-description">The tough new girl from California who joined the Party in Season 2. Known as "Mad Max" for her skateboarding and arcade skills, she brings a fierce independence and emotional depth to the group. She becomes Vecna's target in Season 4.</p>
+                        <div class="character-powers">
+                            <strong>Skills:</strong> Skateboarding, Video Games, Emotional Strength
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    
+    <!-- Interactive Timeline Section -->
+    <section class="timeline-section" id="timeline">
+        <div class="container">
+            <h2>Stranger Things Timeline</h2>
+            <div class="timeline-container">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">1959</div>
+                            <div class="timeline-title">Hawkins National Laboratory Founded</div>
+                            <div class="timeline-description">The Department of Energy establishes Hawkins Lab as part of the nuclear energy program, though it secretly conducts MKUltra experiments on children with psychokinetic abilities.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">1970</div>
+                            <div class="timeline-title">Henry Creel Becomes 001</div>
+                            <div class="timeline-description">Young Henry Creel, after murdering his family, is taken to Hawkins Lab and becomes the first test subject. Dr. Brenner begins studying his remarkable psychic abilities.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">1979</div>
+                            <div class="timeline-title">The Massacre at Hawkins Lab</div>
+                            <div class="timeline-description">Henry Creel (001) manipulates Eleven into removing his Soteria implant. He kills nearly everyone in the lab, but Eleven banishes him to the Upside Down, where he becomes Vecna.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">November 6, 1983</div>
+                            <div class="timeline-title">Will Byers Disappears</div>
+                            <div class="timeline-description">Will Byers vanishes while cycling home from a D&D campaign. A Demogorgon takes him to the Upside Down. This date becomes frozen in the alternate dimension forever.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">November 7, 1983</div>
+                            <div class="timeline-title">Eleven Escapes the Lab</div>
+                            <div class="timeline-description">Eleven escapes from Hawkins Lab and encounters Mike, Dustin, and Lucas. She reveals the existence of the Upside Down and helps them search for Will.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">November 12, 1983</div>
+                            <div class="timeline-title">The Demogorgon is Defeated</div>
+                            <div class="timeline-description">Eleven sacrifices herself to defeat the Demogorgon at Hawkins Middle School. Will is found alive but infected with particles from the Upside Down.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">October 29, 1984</div>
+                            <div class="timeline-title">The Mind Flayer Emerges</div>
+                            <div class="timeline-description">Will's connection to the Upside Down allows the Mind Flayer to possess him. The shadow monster begins spreading through Hawkins' underground tunnel system.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">November 3, 1984</div>
+                            <div class="timeline-title">The Gate is Closed</div>
+                            <div class="timeline-description">Eleven closes the original gate to the Upside Down. The Mind Flayer is expelled from Will's body, and the immediate threat ends. The Snow Ball dance celebrates normalcy.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">June 28, 1985</div>
+                            <div class="timeline-title">Russians Open a New Gate</div>
+                            <div class="timeline-description">Soviet scientists successfully open a new gate to the Upside Down beneath Starcourt Mall, reactivating the Mind Flayer and its influence over the possessed.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">July 4, 1985</div>
+                            <div class="timeline-title">The Battle of Starcourt</div>
+                            <div class="timeline-description">The Mind Flayer creates a massive flesh monster. Hopper sacrifices himself to close the Russian gate. Billy Hargrove dies protecting Eleven. The Byers family moves away.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">March 21, 1986</div>
+                            <div class="timeline-title">Vecna's Murders Begin</div>
+                            <div class="timeline-description">Henry Creel, now known as Vecna, begins killing teenagers in Hawkins through psychic attacks. Each murder creates a new gate, weakening the barrier between dimensions.</div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-year">March 27, 1986</div>
+                            <div class="timeline-title">The Four Gates Open</div>
+                            <div class="timeline-description">After Max's near-death experience, Vecna successfully opens four gates that converge in the center of Hawkins, creating a massive rift and beginning the apocalypse.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- News Section -->
+    <section class="news" id="news">
+        <div class="container">
+            <h2>Latest News & Updates</h2>
+            <div class="news-grid">
+                <article class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&h=250&fit=crop" alt="Season 5 News" loading="lazy">
+                        <div class="news-badge">🔥 BREAKING</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span class="news-date">July 30, 2025</span>
+                            <span class="news-category">Season 5 Final</span>
+                        </div>
+                        <h3 class="news-title">EXCLUSIVE: Season 5 Title Revealed as "The Piggyback"</h3>
+                        <p class="news-excerpt">The Duffer Brothers have finally revealed the official title for Season 5, along with jaw-dropping details about the 2-hour finale that will change everything. Plus: Which main character's fate is sealed?</p>
+                        <a href="#" class="news-link">Read Full Exclusive <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1634170380004-04ba8dfd95b6?w=400&h=250&fit=crop" alt="Cast Reunion" loading="lazy">
+                        <div class="news-badge">💥 VIRAL</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span class="news-date">July 28, 2025</span>
+                            <span class="news-category">Cast Reunion</span>
+                        </div>
+                        <h3 class="news-title">Emotional Cast Wrap Party: "We're Family Forever"</h3>
+                        <p class="news-excerpt">Millie Bobby Brown breaks down in tears as the cast says goodbye after 9 years together. See the heartwarming behind-the-scenes moments and David Harbour's surprise announcement!</p>
+                        <a href="#" class="news-link">Watch Videos <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400&h=250&fit=crop" alt="Upside Down Theory" loading="lazy">
+                        <div class="news-badge">🧠 THEORY</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span class="news-date">July 25, 2025</span>
+                            <span class="news-category">Fan Theories</span>
+                        </div>
+                        <h3 class="news-title">MIND-BLOWN: Fan Discovers Hidden Vecna Clues in Season 1</h3>
+                        <p class="news-excerpt">A Reddit user found incredible hidden details in Season 1 that perfectly foreshadowed Vecna's identity. This changes EVERYTHING we thought we knew about the timeline!</p>
+                        <a href="#" class="news-link">See Proof <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop" alt="Netflix Stats" loading="lazy">
+                        <div class="news-badge">📊 STATS</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span class="news-date">July 22, 2025</span>
+                            <span class="news-category">Netflix Records</span>
+                        </div>
+                        <h3 class="news-title">Stranger Things Breaks Netflix Record: 2.5 Billion Hours Watched!</h3>
+                        <p class="news-excerpt">The show officially becomes Netflix's most-watched series of all time, surpassing Squid Game. See the incredible global impact statistics and fan celebration videos!</p>
+                        <a href="#" class="news-link">View Records <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=250&fit=crop" alt="Eleven Powers" loading="lazy">
+                        <div class="news-badge">⚡ POWERS</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span class="news-date">July 20, 2025</span>
+                            <span class="news-category">Character Analysis</span>
+                        </div>
+                        <h3 class="news-title">Scientists Explain: Could Eleven's Powers Actually Exist?</h3>
+                        <p class="news-excerpt">Real neuroscientists and physicists analyze Eleven's telekinetic abilities and reveal shocking connections to actual quantum physics research. The results might surprise you!</p>
+                        <a href="#" class="news-link">Discover Science <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                
+                <article class="news-card">
+                    <div class="news-image">
+                        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=250&fit=crop" alt="Hawkins Tourism" loading="lazy">
+                        <div class="news-badge">🏘️ TOURISM</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span class="news-date">July 18, 2025</span>
+                            <span class="news-category">Real Locations</span>
+                        </div>
+                        <h3 class="news-title">Visit Real Hawkins: Georgia Town Becomes Tourist Hotspot</h3>
+                        <p class="news-excerpt">Jackson, Georgia (the real filming location) has transformed into a Stranger Things theme park! See the Hawkins Lab tours, Scoops Ahoy replica, and Palace Arcade recreation.</p>
+                        <a href="#" class="news-link">Plan Visit <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Hawkins Locations Section -->
+    <section class="locations" id="locations">
+        <div class="container">
+            <h2>🏘️ Iconic Locations of Hawkins</h2>
+            <p class="section-intro">Explore the mysterious town of Hawkins, Indiana, where every location holds secrets and supernatural significance.</p>
+            
+            <div class="locations-grid">
+                <div class="location-card">
+                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=400&h=250&fit=crop" alt="Hawkins National Laboratory" class="location-image" loading="lazy">
+                    <div class="location-info">
+                        <h3>Hawkins National Laboratory</h3>
+                        <div class="location-status danger">⚠️ Restricted Access</div>
+                        <p>The epicenter of all supernatural activity in Hawkins. This government facility conducted MKUltra experiments and opened the first gate to the Upside Down. Home to Eleven and other test subjects.</p>
+                        <div class="location-details">
+                            <span><strong>First Appearance:</strong> Season 1</span>
+                            <span><strong>Significance:</strong> Origin of the supernatural events</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="location-card">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop" alt="Hawkins Middle School" class="location-image" loading="lazy">
+                    <div class="location-info">
+                        <h3>Hawkins Middle School</h3>
+                        <div class="location-status safe">✅ Safe Zone</div>
+                        <p>Where The Party first met and bonded over D&D campaigns. The AV room serves as their headquarters, and the gymnasium hosted the memorable Snow Ball dance.</p>
+                        <div class="location-details">
+                            <span><strong>First Appearance:</strong> Season 1</span>
+                            <span><strong>Notable Events:</strong> D&D campaigns, Snow Ball dance</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="location-card">
+                    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=250&fit=crop" alt="Hawkins Woods" class="location-image" loading="lazy">
+                    <div class="location-info">
+                        <h3>Hawkins Woods</h3>
+                        <div class="location-status danger">⚠️ High Danger</div>
+                        <p>The vast forest surrounding Hawkins where Will disappeared and multiple gates to the Upside Down have opened. Contains the mysterious quarry and countless hiding spots.</p>
+                        <div class="location-details">
+                            <span><strong>First Appearance:</strong> Season 1</span>
+                            <span><strong>Dangers:</strong> Demogorgons, Portals, Getting Lost</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="location-card">
+                    <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?w=400&h=250&fit=crop" alt="Starcourt Mall" class="location-image" loading="lazy">
+                    <div class="location-info">
+                        <h3>Starcourt Mall</h3>
+                        <div class="location-status destroyed">💥 Destroyed</div>
+                        <p>The crown jewel of Hawkins' modernization in the 1980s. Beneath its cheerful exterior lay a secret Russian base. Home to Scoops Ahoy ice cream parlor where Steve and Robin worked.</p>
+                        <div class="location-details">
+                            <span><strong>Active Period:</strong> Season 3</span>
+                            <span><strong>Fate:</strong> Destroyed in Battle of Starcourt</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="location-card">
+                    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=250&fit=crop" alt="The Wheeler House" class="location-image" loading="lazy">
+                    <div class="location-info">
+                        <h3>The Wheeler House</h3>
+                        <div class="location-status safe">🏠 Safe Haven</div>
+                        <p>Mike and Nancy's family home, which has served as a safe house and meeting point for The Party. Features the iconic basement where many D&D campaigns took place.</p>
+                        <div class="location-details">
+                            <span><strong>Residents:</strong> Mike, Nancy, Karen, Ted Wheeler</span>
+                            <span><strong>Notable:</strong> Basement HQ, Holly's encounters</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="location-card">
+                    <img src="https://images.unsplash.com/photo-1585128792020-803d29415281?w=400&h=250&fit=crop" alt="The Byers House" class="location-image" loading="lazy">
+                    <div class="location-info">
+                        <h3>The Byers House</h3>
+                        <div class="location-status unstable">⚡ Supernatural Activity</div>
+                        <p>Will and Jonathan's modest home where Joyce first noticed the supernatural occurrences. The house has experienced multiple paranormal events and dimensional bleeds.</p>
+                        <div class="location-details">
+                            <span><strong>Residents:</strong> Joyce, Will, Jonathan Byers</span>
+                            <span><strong>Events:</strong> Christmas lights communication, portal appearances</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Fan Trivia Section -->
+    <section class="trivia" id="trivia">
+        <div class="container">
+            <h2>🧠 Ultimate Fan Trivia</h2>
+            <p class="section-intro">Test your knowledge with these incredible facts and behind-the-scenes secrets from the world of Stranger Things!</p>
+            
+            <div class="trivia-grid">
+                <div class="trivia-card">
+                    <div class="trivia-icon">🎬</div>
+                    <h3>Production Secrets</h3>
+                    <ul>
+                        <li>The show was originally titled "Montauk" and was set in Montauk, New York</li>
+                        <li>Millie Bobby Brown shaved her head for real to play Eleven</li>
+                        <li>The Duffer Brothers pitched the show to 15-20 networks before Netflix picked it up</li>
+                        <li>The opening credits font is based on Stephen King novel covers from the 1980s</li>
+                        <li>Most of the show is filmed in Georgia, not Indiana</li>
+                    </ul>
+                </div>
+                
+                <div class="trivia-card">
+                    <div class="trivia-icon">🎭</div>
+                    <h3>Cast Facts</h3>
+                    <ul>
+                        <li>Gaten Matarazzo really has cleidocranial dysplasia, just like Dustin</li>
+                        <li>David Harbour (Hopper) is a trained Shakespearean actor</li>
+                        <li>Winona Ryder helped the young cast with their acting technique</li>
+                        <li>Joe Keery's (Steve) hair is naturally that magnificent</li>
+                        <li>Noah Schnapp came out as gay in 2022, mirroring Will's journey</li>
+                    </ul>
+                </div>
+                
+                <div class="trivia-card">
+                    <div class="trivia-icon">🎵</div>
+                    <h3>Music & Sound</h3>
+                    <ul>
+                        <li>The soundtrack is created entirely with vintage 1980s synthesizers</li>
+                        <li>"Should I Stay or Should I Go" by The Clash was Will's favorite song</li>
+                        <li>Kate Bush's "Running Up That Hill" became #1 worldwide after Season 4</li>
+                        <li>The Demogorgon's sound is a mix of baby cries and animal growls</li>
+                        <li>Kyle Dixon and Michael Stein composed the iconic theme in just a few days</li>
+                    </ul>
+                </div>
+                
+                <div class="trivia-card">
+                    <div class="trivia-icon">🎨</div>
+                    <h3>Visual Effects</h3>
+                    <ul>
+                        <li>The Upside Down is filmed with practical sets covered in debris and spores</li>
+                        <li>Eleven's nosebleeds are created with corn syrup and food coloring</li>
+                        <li>The Mind Flayer was inspired by H.P. Lovecraft creatures</li>
+                        <li>Vecna required 7-8 hours of makeup application each day</li>
+                        <li>The shadow particles in the Upside Down are called "snow"</li>
+                    </ul>
+                </div>
+                
+                <div class="trivia-card">
+                    <div class="trivia-icon">📚</div>
+                    <h3>D&D References</h3>
+                    <ul>
+                        <li>The Demogorgon is named after a D&D creature, the Prince of Demons</li>
+                        <li>Each character has a D&D class: Mike (Paladin), Dustin (Bard), Lucas (Ranger), Will (Cleric)</li>
+                        <li>The Mind Flayer is based on the Illithids from D&D</li>
+                        <li>Vecna is one of the most powerful liches in D&D lore</li>
+                        <li>The Upside Down parallels the Shadowfell from D&D</li>
+                    </ul>
+                </div>
+                
+                <div class="trivia-card">
+                    <div class="trivia-icon">🏆</div>
+                    <h3>Cultural Impact</h3>
+                    <ul>
+                        <li>The show single-handedly revived 1980s nostalgia in pop culture</li>
+                        <li>Eggo waffle sales increased significantly after Season 1</li>
+                        <li>D&D experienced a massive popularity surge thanks to the show</li>
+                        <li>Netflix's stock price jumped 9% after Season 1 premiered</li>
+                        <li>The show has been translated into over 30 languages</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Fan Theories Section -->
+    <section class="theories" id="theories">
+        <div class="container">
+            <h2>🔮 Mind-Blowing Fan Theories</h2>
+            <p class="section-intro">Dive deep into the most compelling theories that could change everything you think you know about Stranger Things!</p>
+            
+            <div class="theories-grid">
+                <div class="theory-card">
+                    <div class="theory-header">
+                        <div class="theory-status confirmed">✅ CONFIRMED</div>
+                        <h3>Will Created the Upside Down</h3>
+                    </div>
+                    <div class="theory-content">
+                        <p><strong>The Theory:</strong> When Will was trapped in the Upside Down, his memories and psychic connection shaped the dimension to mirror Hawkins exactly as he remembered it.</p>
+                        <p><strong>Evidence:</strong> The Upside Down Hawkins is frozen on November 6, 1983 - the day Will disappeared. This explains why it looks exactly like Hawkins but stops evolving.</p>
+                        <p><strong>Status:</strong> Confirmed by the Duffer Brothers in Season 4!</p>
+                    </div>
+                </div>
+                
+                <div class="theory-card">
+                    <div class="theory-header">
+                        <div class="theory-status plausible">🤔 HIGHLY PLAUSIBLE</div>
+                        <h3>Eleven is the Monster</h3>
+                    </div>
+                    <div class="theory-content">
+                        <p><strong>The Theory:</strong> Eleven unconsciously created the Demogorgon and other monsters as manifestations of her trauma and anger from the lab experiments.</p>
+                        <p><strong>Evidence:</strong> The Demogorgon appears right after Eleven makes contact with it. Her powers seem connected to the Upside Down creatures. Both feed on psychic energy.</p>
+                        <p><strong>Implications:</strong> This would make Eleven both the solution and the problem.</p>
+                    </div>
+                </div>
+                
+                <div class="theory-card">
+                    <div class="theory-header">
+                        <div class="theory-status mystery">❓ UNRESOLVED</div>
+                        <h3>Time Loop Theory</h3>
+                    </div>
+                    <div class="theory-content">
+                        <p><strong>The Theory:</strong> The events of Stranger Things are stuck in a time loop, with each "season" being another cycle where the characters try to break free.</p>
+                        <p><strong>Evidence:</strong> Recurring patterns, similar threats each season, and the cyclical nature of the supernatural events.</p>
+                        <p><strong>Wild Prediction:</strong> Season 5 will reveal this loop and show how to break it permanently.</p>
+                    </div>
+                </div>
+                
+                <div class="theory-card">
+                    <div class="theory-header">
+                        <div class="theory-status debunked">❌ DEBUNKED</div>
+                        <h3>Hopper is the American</h3>
+                    </div>
+                    <div class="theory-content">
+                        <p><strong>The Theory:</strong> The mysterious "American" prisoner in the Russian facility was Jim Hopper, captured during the Battle of Starcourt.</p>
+                        <p><strong>Evidence:</strong> Hopper's apparent death coincided with the post-credits scene showing the Russian prison.</p>
+                        <p><strong>Resolution:</strong> Confirmed in Season 4 - Hopper was indeed the American prisoner!</p>
+                    </div>
+                </div>
+                
+                <div class="theory-card">
+                    <div class="theory-header">
+                        <div class="theory-status developing">🔥 DEVELOPING</div>
+                        <h3>The Upside Down is Dying</h3>
+                    </div>
+                    <div class="theory-content">
+                        <p><strong>The Theory:</strong> The Upside Down is a dying dimension trying to consume living worlds to survive, which is why it's slowly merging with Hawkins.</p>
+                        <p><strong>Evidence:</strong> The dimension appears decayed and lifeless. Vecna's plan involves merging dimensions, suggesting desperation.</p>
+                        <p><strong>Season 5 Prediction:</strong> The final battle will be about saving or destroying the Upside Down permanently.</p>
+                    </div>
+                </div>
+                
+                <div class="theory-card">
+                    <div class="theory-header">
+                        <div class="theory-status wild">🤯 MIND-BENDING</div>
+                        <h3>Hawkins is a Government Experiment</h3>
+                    </div>
+                    <div class="theory-content">
+                        <p><strong>The Theory:</strong> The entire town of Hawkins is an elaborate government experiment, with all residents being test subjects monitored for their reactions to supernatural events.</p>
+                        <p><strong>Evidence:</strong> The lab's extensive surveillance, how quickly cover-ups happen, and how many residents seem surprisingly adaptable to supernatural events.</p>
+                        <p><strong>If True:</strong> Everything we've seen has been carefully orchestrated from the beginning.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <!-- Villains Section -->
 <section class="villains" id="villains">
     <div class="container">
@@ -1053,58 +2816,93 @@
         </div>
     </section>
     
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+    </main>
+    
     <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>Explore</h3>
+                    <h3>🎬 Explore Hawkins</h3>
                     <ul class="footer-links">
-                        <li><a href="#">About the Show</a></li>
-                        <li><a href="#">Seasons & Episodes</a></li>
-                        <li><a href="#">Character Guide</a></li>
-                        <li><a href="#">Upside Down Lore</a></li>
-                        <li><a href="#">Hawkins Map</a></li>
+                        <li><a href="#about">The Duffer Brothers' Vision</a></li>
+                        <li><a href="#seasons">All 5 Seasons Deep Dive</a></li>
+                        <li><a href="#characters">Complete Character Guide</a></li>
+                        <li><a href="#upside-down">Upside Down Encyclopedia</a></li>
+                        <li><a href="#locations">Hawkins Location Map</a></li>
+                        <li><a href="#timeline">Complete Timeline</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-column">
-                    <h3>Resources</h3>
+                    <h3>🧠 Fan Resources</h3>
                     <ul class="footer-links">
-                        <li><a href="#">News & Updates</a></li>
-                        <li><a href="#">Episode Guide</a></li>
-                        <li><a href="#">Trivia & Facts</a></li>
-                        <li><a href="#">Soundtrack</a></li>
-                        <li><a href="#">Merchandise</a></li>
+                        <li><a href="#news">Latest ST News</a></li>
+                        <li><a href="#trivia">Mind-Blowing Trivia</a></li>
+                        <li><a href="#theories">Fan Theories Hub</a></li>
+                        <li><a href="#">Episode Analysis</a></li>
+                        <li><a href="#">D&D Campaign Guide</a></li>
+                        <li><a href="#">80s References List</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-column">
-                    <h3>Connect</h3>
+                    <h3>🎵 Beyond the Show</h3>
                     <ul class="footer-links">
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Contribute</a></li>
-                        <li><a href="#">Fan Community</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Kyle Dixon & Michael Stein Soundtrack</a></li>
+                        <li><a href="#">80s Spotify Playlists</a></li>
+                        <li><a href="#">Behind the Scenes</a></li>
+                        <li><a href="#">Cast Interviews</a></li>
+                        <li><a href="#">Netflix Merchandise</a></li>
+                        <li><a href="#">Filming Locations Tour</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-column">
-                    <h3>Follow Us</h3>
-                    <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1rem;">Join our Stranger Things fan community across social media.</p>
+                    <h3>👾 Join The Party</h3>
+                    <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1rem;">Connect with fellow fans in the ultimate Stranger Things community!</p>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-reddit-alien"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#" title="Facebook Fan Groups"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter Discussions"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="Instagram Updates"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="Reddit Theories"><i class="fab fa-reddit-alien"></i></a>
+                        <a href="#" title="YouTube Breakdowns"><i class="fab fa-youtube"></i></a>
+                        <a href="#" title="TikTok Content"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem;">
+                        <h4 style="color: var(--accent); font-size: 0.9rem; margin-bottom: 0.5rem;">🎮 Easter Eggs Found:</h4>
+                        <div id="easter-egg-counter" style="color: var(--primary); font-size: 1.5rem; font-weight: 700;">0 / 11</div>
+                        <p style="font-size: 0.8rem; color: var(--text-dim);">Keep exploring to find them all!</p>
                     </div>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2023 Stranger Things Universe. This is an unofficial fan website. All Stranger Things content is property of Netflix.</p>
+                <div style="text-align: center; margin-bottom: 1rem;">
+                    <h4 style="color: var(--accent); font-size: 1rem; margin-bottom: 0.5rem;">
+                        ✨ "Friends don't lie. But websites can be amazing." ✨
+                    </h4>
+                    <p style="font-size: 0.9rem; color: var(--text-dim);">
+                        Made with ❤️ by the biggest Stranger Things fans in the world
+                    </p>
+                </div>
+                
+                <p>&copy; 2025 The Ultimate Stranger Things Fan Hub. This is an unofficial fan website created with love and dedication. All Stranger Things content, characters, and imagery are property of Netflix and the Duffer Brothers. We're just here to celebrate the incredible world of Hawkins!</p>
+                
+                <div style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-dim); text-align: center;">
+                    <p>🎲 "In a world full of Tens, be an Eleven" 🎲</p>
+                    <p>Special thanks to Matt and Ross Duffer for creating the most incredible sci-fi horror masterpiece of our generation!</p>
+                </div>
             </div>
         </div>
     </footer>
@@ -1115,13 +2913,583 @@
         <i class="fas fa-music"></i> <span>Play Theme</span>
     </button>
     <!-- Villains Section -->
-    <section class="villains" id="villains">
-        <div class="container">
-            <h2>Main Villains</h2>
-            <div class="villains-grid"></div>
-        </div>
-    </section>
+    
     <script>
+// ===== Loading Screen =====
+window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loading-screen');
+    setTimeout(() => {
+        loadingScreen.classList.add('hidden');
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+        }, 500);
+    }, 3000); // 3 second loading screen
+});
+
+// ===== Scroll Progress Bar =====
+const scrollProgress = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = (scrollTop / docHeight) * 100;
+    scrollProgress.style.width = scrollPercent + '%';
+});
+
+// ===== Back to Top Button =====
+const backToTopBtn = document.getElementById('back-to-top');
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('visible');
+    } else {
+        backToTopBtn.classList.remove('visible');
+    }
+});
+
+backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+// ===== Enhanced Search Functionality =====
+const searchInput = document.getElementById('search-input');
+const searchResults = document.getElementById('search-results');
+
+const searchData = [
+    { type: 'character', name: 'Eleven', section: 'characters' },
+    { type: 'character', name: 'Mike Wheeler', section: 'characters' },
+    { type: 'character', name: 'Dustin Henderson', section: 'characters' },
+    { type: 'character', name: 'Lucas Sinclair', section: 'characters' },
+    { type: 'character', name: 'Will Byers', section: 'characters' },
+    { type: 'character', name: 'Joyce Byers', section: 'characters' },
+    { type: 'character', name: 'Jim Hopper', section: 'characters' },
+    { type: 'character', name: 'Nancy Wheeler', section: 'characters' },
+    { type: 'character', name: 'Jonathan Byers', section: 'characters' },
+    { type: 'character', name: 'Steve Harrington', section: 'characters' },
+    { type: 'episode', name: 'The Vanishing of Will Byers', section: 'seasons' },
+    { type: 'episode', name: 'The Weirdo on Maple Street', section: 'seasons' },
+    { type: 'episode', name: 'Holly, Jolly', section: 'seasons' },
+    { type: 'location', name: 'Upside Down', section: 'upside-down' },
+    { type: 'location', name: 'Hawkins', section: 'about' },
+    { type: 'villain', name: 'Demogorgon', section: 'villains' },
+    { type: 'villain', name: 'Mind Flayer', section: 'villains' }
+];
+
+searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    if (query.length < 2) {
+        searchResults.style.display = 'none';
+        return;
+    }
+    
+    const filteredResults = searchData.filter(item => 
+        item.name.toLowerCase().includes(query)
+    );
+    
+    if (filteredResults.length > 0) {
+        searchResults.innerHTML = filteredResults
+            .slice(0, 5) // Limit to 5 results
+            .map(item => `
+                <div class="search-result-item" onclick="navigateToSection('${item.section}')">
+                    <strong>${item.type}</strong>: ${item.name}
+                </div>
+            `).join('');
+        searchResults.style.display = 'block';
+    } else {
+        searchResults.innerHTML = '<div class="search-result-item">No results found</div>';
+        searchResults.style.display = 'block';
+    }
+});
+
+// Hide search results when clicking outside
+document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.style.display = 'none';
+    }
+});
+
+function navigateToSection(section) {
+    searchResults.style.display = 'none';
+    searchInput.value = '';
+    const element = document.getElementById(section);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// ===== Theme Toggle Functionality =====
+const themeToggle = document.getElementById('theme-toggle');
+const html = document.documentElement;
+let currentTheme = 0;
+const themes = ['dark', 'light', 'upside-down'];
+const themeIcons = ['fa-moon', 'fa-sun', 'fa-skull'];
+
+themeToggle.addEventListener('click', () => {
+    currentTheme = (currentTheme + 1) % themes.length;
+    html.setAttribute('data-theme', themes[currentTheme]);
+    
+    // Update icon
+    themeToggle.innerHTML = `<i class="fas ${themeIcons[currentTheme]}"></i>`;
+    
+    // Store preference
+    localStorage.setItem('strangerThingsTheme', themes[currentTheme]);
+    
+    // Add theme change effect
+    themeToggle.style.transform = 'translateY(-50%) scale(0.8)';
+    setTimeout(() => {
+        themeToggle.style.transform = 'translateY(-50%) scale(1)';
+    }, 150);
+});
+
+// Load saved theme
+const savedTheme = localStorage.getItem('strangerThingsTheme');
+if (savedTheme) {
+    const themeIndex = themes.indexOf(savedTheme);
+    if (themeIndex !== -1) {
+        currentTheme = themeIndex;
+        html.setAttribute('data-theme', themes[currentTheme]);
+        themeToggle.innerHTML = `<i class="fas ${themeIcons[currentTheme]}"></i>`;
+    }
+}
+
+// ===== Timeline Animation =====
+const timelineItems = document.querySelectorAll('.timeline-item');
+
+const animateTimeline = () => {
+    timelineItems.forEach((item, index) => {
+        const itemTop = item.getBoundingClientRect().top;
+        const itemBottom = item.getBoundingClientRect().bottom;
+        
+        if (itemTop < window.innerHeight && itemBottom > 0) {
+            setTimeout(() => {
+                item.classList.add('animate');
+            }, index * 200);
+        }
+    });
+};
+
+window.addEventListener('scroll', animateTimeline);
+animateTimeline(); // Initial check
+
+// ===== Enhanced Easter Eggs =====
+let secretCode = [];
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+
+document.addEventListener('keydown', (e) => {
+    secretCode.push(e.code);
+    
+    if (secretCode.length > konamiCode.length) {
+        secretCode = secretCode.slice(-konamiCode.length);
+    }
+    
+    if (JSON.stringify(secretCode) === JSON.stringify(konamiCode)) {
+        activateKonamiEasterEgg();
+        secretCode = [];
+    }
+    
+    // Original Demogorgon easter egg (Ctrl+D)
+    if(e.key === 'd' && e.ctrlKey && !eggTriggered) {
+        demogorgonEgg.style.display = 'block';
+        eggTriggered = true;
+        setTimeout(() => {
+            demogorgonEgg.style.display = 'none';
+            eggTriggered = false;
+        }, 2000);
+    }
+});
+
+function activateKonamiEasterEgg() {
+    // Switch to Upside Down theme
+    html.setAttribute('data-theme', 'upside-down');
+    currentTheme = 2;
+    themeToggle.innerHTML = '<i class="fas fa-skull"></i>';
+    
+    // Create floating particles
+    createFloatingParticles();
+    
+    // Show special message
+    const message = document.createElement('div');
+    message.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(139,0,0,0.95);
+        color: #FFB3B3;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 1.2rem;
+        padding: 2rem;
+        border-radius: 10px;
+        text-align: center;
+        z-index: 10001;
+        box-shadow: 0 0 30px rgba(139,0,0,0.8);
+        animation: pulse 2s infinite;
+    `;
+    message.innerHTML = 'WELCOME TO THE UPSIDE DOWN<br><small style="font-size: 0.6rem; margin-top: 1rem; display: block;">You found the secret!</small>';
+    document.body.appendChild(message);
+    
+    setTimeout(() => {
+        message.remove();
+    }, 4000);
+}
+
+function createFloatingParticles() {
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #FF6B6B;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            left: ${Math.random() * 100}vw;
+            top: ${Math.random() * 100}vh;
+            animation: floatParticle ${3 + Math.random() * 4}s linear infinite;
+        `;
+        document.body.appendChild(particle);
+        
+        setTimeout(() => {
+            particle.remove();
+        }, 7000);
+    }
+}
+
+// Add CSS for floating particles
+const particleCSS = document.createElement('style');
+particleCSS.textContent = `
+    @keyframes floatParticle {
+        0% { 
+            transform: translateY(0) rotate(0deg);
+            opacity: 0;
+        }
+        10% { 
+            opacity: 1;
+        }
+        90% { 
+            opacity: 1;
+        }
+        100% { 
+            transform: translateY(-100vh) rotate(360deg);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(particleCSS);
+
+// ===== Populate Villains Section =====
+const villains = [
+    {
+        name: "Demogorgon",
+        image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300&h=300&fit=crop",
+        description: "A predatory creature from the Upside Down with a flower-like head that opens to reveal rows of sharp teeth.",
+        threat: "Extreme",
+        firstAppearance: "Season 1"
+    },
+    {
+        name: "Mind Flayer",
+        image: "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=300&h=300&fit=crop",
+        description: "The Shadow Monster that rules the Upside Down, capable of possessing and controlling other creatures.",
+        threat: "Catastrophic",
+        firstAppearance: "Season 2"
+    },
+    {
+        name: "Vecna",
+        image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=300&fit=crop",
+        description: "Henry Creel, the first test subject who became the most powerful psychic entity in the Upside Down.",
+        threat: "Apocalyptic",
+        firstAppearance: "Season 4"
+    },
+    {
+        name: "Demodogs",
+        image: "https://images.unsplash.com/photo-1517423440434-02c8ba8e6a36?w=300&h=300&fit=crop",
+        description: "Juvenile Demogorgons that hunt in packs, smaller but more agile than their adult counterparts.",
+        threat: "High",
+        firstAppearance: "Season 2"
+    }
+];
+
+// Populate villains grid
+const mainVillainsGrid = document.querySelector('.villains-grid');
+if (mainVillainsGrid) {
+    mainVillainsGrid.innerHTML = villains.map(villain => `
+        <div class="character-card">
+            <img src="${villain.image}" alt="${villain.name}" class="character-image" loading="lazy">
+            <div class="character-info">
+                <span class="character-status" style="background: ${
+                    villain.threat === 'Extreme' ? '#ff6b6b' :
+                    villain.threat === 'Catastrophic' ? '#8b0000' :
+                    villain.threat === 'Apocalyptic' ? '#2d0000' : '#ff9800'
+                }">${villain.threat}</span>
+                <h3 class="character-name">${villain.name}</h3>
+                <span class="character-actor">First seen: ${villain.firstAppearance}</span>
+                <p class="character-description">${villain.description}</p>
+                <a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.8rem;">View Details</a>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ===== PWA Installation =====
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Show install button
+    const installBtn = document.createElement('button');
+    installBtn.textContent = '📱 Install App';
+    installBtn.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 24px;
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 0.7rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        z-index: 999;
+        box-shadow: 0 4px 12px rgba(0, 200, 255, 0.3);
+        transition: all 0.3s ease;
+    `;
+    
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const result = await deferredPrompt.userChoice;
+            if (result.outcome === 'accepted') {
+                installBtn.remove();
+            }
+            deferredPrompt = null;
+        }
+    });
+    
+    document.body.appendChild(installBtn);
+    
+    // Auto-hide after 10 seconds
+    setTimeout(() => {
+        if (installBtn && installBtn.parentNode) {
+            installBtn.style.opacity = '0';
+            setTimeout(() => installBtn.remove(), 300);
+        }
+    }, 10000);
+});
+
+// ===== Newsletter Subscription =====
+const newsletterBtn = document.querySelector('.newsletter-input button');
+const newsletterInput = document.querySelector('.newsletter-input input');
+
+if (newsletterBtn && newsletterInput) {
+    newsletterBtn.addEventListener('click', () => {
+        const email = newsletterInput.value.trim();
+        if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            // Simulate subscription
+            newsletterBtn.innerHTML = '✓ Subscribed!';
+            newsletterBtn.style.background = '#2ecc71';
+            newsletterInput.value = '';
+            
+            setTimeout(() => {
+                newsletterBtn.innerHTML = 'Subscribe';
+                newsletterBtn.style.background = '';
+            }, 3000);
+        } else {
+            newsletterInput.style.borderColor = '#ff4757';
+            newsletterInput.placeholder = 'Please enter a valid email';
+            
+            setTimeout(() => {
+                newsletterInput.style.borderColor = '';
+                newsletterInput.placeholder = 'Enter your email';
+            }, 3000);
+        }
+    });
+    
+    newsletterInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            newsletterBtn.click();
+        }
+    });
+}
+
+// ===== Performance Metrics =====
+function showPerformanceMetrics() {
+    if ('performance' in window) {
+        const navigation = performance.getEntriesByType('navigation')[0];
+        const loadTime = Math.round(navigation.loadEventEnd - navigation.fetchStart);
+        
+        // Create performance indicator
+        const perfIndicator = document.createElement('div');
+        perfIndicator.className = 'performance-indicator';
+        perfIndicator.innerHTML = `
+            <div class="perf-icon">⚡</div>
+            <div class="perf-text">Loaded in ${loadTime}ms</div>
+        `;
+        
+        document.body.appendChild(perfIndicator);
+        
+        // Auto hide after 5 seconds
+        setTimeout(() => {
+            perfIndicator.style.opacity = '0';
+            setTimeout(() => perfIndicator.remove(), 500);
+        }, 5000);
+    }
+}
+
+// Show performance metrics after page load
+window.addEventListener('load', () => {
+    setTimeout(showPerformanceMetrics, 1000);
+});
+
+// ===== Image Lazy Loading =====
+function initImageLazyLoading() {
+    const images = document.querySelectorAll('img[data-src]');
+    
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.remove('lazy');
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+        
+        images.forEach(img => imageObserver.observe(img));
+    } else {
+        // Fallback for older browsers
+        images.forEach(img => {
+            img.src = img.dataset.src;
+            img.classList.remove('lazy');
+        });
+    }
+}
+
+// Initialize lazy loading
+window.addEventListener('DOMContentLoaded', initImageLazyLoading);
+
+// ===== Accessibility Improvements =====
+function initAccessibility() {
+    // Add skip to main content link
+    const skipLink = document.createElement('a');
+    skipLink.href = '#main-content';
+    skipLink.className = 'skip-link';
+    skipLink.textContent = 'Skip to main content';
+    document.body.insertBefore(skipLink, document.body.firstChild);
+    
+    // Focus management for mobile menu
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const mobileMenu = document.querySelector('.main-nav');
+    
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.contains('active');
+            if (isOpen) {
+                mobileMenuBtn.focus();
+            }
+        });
+    }
+    
+    // Add ARIA labels to interactive elements
+    document.querySelectorAll('button, a').forEach(element => {
+        if (!element.getAttribute('aria-label') && !element.textContent.trim()) {
+            const icon = element.querySelector('i');
+            if (icon) {
+                const iconClass = icon.className;
+                if (iconClass.includes('search')) element.setAttribute('aria-label', 'Search');
+                if (iconClass.includes('menu')) element.setAttribute('aria-label', 'Toggle menu');
+                if (iconClass.includes('arrow-up')) element.setAttribute('aria-label', 'Back to top');
+                if (iconClass.includes('sun')) element.setAttribute('aria-label', 'Toggle theme');
+            }
+        }
+    });
+}
+
+// Initialize accessibility features
+window.addEventListener('DOMContentLoaded', initAccessibility);
+
+// ===== Cookie Consent =====
+function initCookieConsent() {
+    if (!localStorage.getItem('cookieConsent')) {
+        const banner = document.createElement('div');
+        banner.className = 'cookie-banner';
+        banner.innerHTML = `
+            <div class="cookie-content">
+                <div class="cookie-text">
+                    <h4>🍪 Cookie Notice</h4>
+                    <p>This site uses cookies to enhance your experience and remember your preferences.</p>
+                </div>
+                <div class="cookie-buttons">
+                    <button class="btn btn-primary" onclick="acceptCookies()">Accept</button>
+                    <button class="btn btn-secondary" onclick="declineCookies()">Decline</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(banner);
+    }
+}
+
+function acceptCookies() {
+    localStorage.setItem('cookieConsent', 'accepted');
+    document.querySelector('.cookie-banner').remove();
+}
+
+function declineCookies() {
+    localStorage.setItem('cookieConsent', 'declined');
+    document.querySelector('.cookie-banner').remove();
+}
+
+// Initialize cookie consent
+setTimeout(initCookieConsent, 2000);
+
+// ===== Konami Code Easter Egg =====
+let konamiSequenceInput = [];
+const konamiSequence = [
+    'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+    'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+    'KeyB', 'KeyA'
+];
+
+document.addEventListener('keydown', (e) => {
+    konamiSequenceInput.push(e.code);
+    
+    if (konamiSequenceInput.length > konamiSequence.length) {
+        konamiSequenceInput.shift();
+    }
+    
+    if (konamiSequenceInput.join(',') === konamiSequence.join(',')) {
+        activateKonamiEasterEgg();
+        konamiSequenceInput = [];
+    }
+});
+
+function activateKonamiEasterEgg() {
+    // Add special upside down effect
+    document.body.style.transform = 'rotate(180deg)';
+    document.body.style.transition = 'transform 2s ease';
+    
+    // Show special message
+    const message = document.createElement('div');
+    message.innerHTML = `
+        <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(180deg); 
+                    background: rgba(0,0,0,0.9); color: #ff0000; padding: 2rem; border-radius: 10px; 
+                    text-align: center; z-index: 10000; font-family: 'Press Start 2P', monospace;">
+            <h2>🎮 KONAMI CODE ACTIVATED! 🎮</h2>
+            <p>Welcome to the Upside Down!</p>
+            <button onclick="this.parentElement.parentElement.remove(); document.body.style.transform = 'none';" 
+                    style="background: #ff0000; color: white; border: none; padding: 0.5rem 1rem; 
+                           margin-top: 1rem; border-radius: 5px; cursor: pointer;">
+                Return to Normal
+            </button>
+        </div>
+    `;
+    document.body.appendChild(message);
+}
+
 // ======= Season Data (Sourced from IMDB/Wikipedia) =======
 const seasonsData = [
     // Season 1
@@ -1644,6 +4012,29 @@ mobileMenuBtn.addEventListener('click', () => {
     const expanded = mainNav.classList.contains('active');
     mobileMenuBtn.setAttribute('aria-expanded', expanded);
     mobileMenuBtn.innerHTML = expanded ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+    
+    // Prevent body scrolling when menu is open
+    document.body.style.overflow = expanded ? 'hidden' : '';
+});
+
+// Close mobile menu when clicking on nav links
+mainNav.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+        mainNav.classList.remove('active');
+        mobileMenuBtn.setAttribute('aria-expanded', false);
+        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        document.body.style.overflow = '';
+    }
+});
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (!mainNav.contains(e.target) && !mobileMenuBtn.contains(e.target) && mainNav.classList.contains('active')) {
+        mainNav.classList.remove('active');
+        mobileMenuBtn.setAttribute('aria-expanded', false);
+        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        document.body.style.overflow = '';
+    }
 });
 // Header Scroll Effect
 const header = document.getElementById('main-header');
